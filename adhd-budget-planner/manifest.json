@@ -1,0 +1,32 @@
+{
+  "name": "ADHD Budget Planner - Calm Money & Payoff Planner",
+  "short_name": "ADHD Budget Planner",
+  "description": "A calm, offline, low-stimulation budget planner engineered for ADHD brains. What is safe to spend today, and the date you are debt-free.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f1715",
+  "theme_color": "#134e4a",
+  "categories": ["finance", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

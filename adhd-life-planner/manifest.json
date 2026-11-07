@@ -1,0 +1,32 @@
+{
+  "name": "ADHD Life Planner - Low-Demand Daily Balance & Focus Hub",
+  "short_name": "ADHD Life Planner",
+  "description": "A calm, offline, zero-guilt daily life planner and dopamine menu built specifically for ADHD and executive dysfunction. Fog mode, brain dump, and low-spoons routines.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#14261d",
+  "theme_color": "#254636",
+  "categories": ["lifestyle", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

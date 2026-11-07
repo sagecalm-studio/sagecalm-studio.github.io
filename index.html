@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sage Calm Studio â€” Low-Stimulation Digital Life Tools</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background-color: #0d1a14;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+    .container {
+      max-width: 680px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.08);
+      color: #52b788;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+    }
+    h1 { font-size: 30px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+    .tagline { font-size: 14.5px; color: #94a3b8; margin-bottom: 28px; line-height: 1.5; }
+    .tool-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+    .tool-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: all 0.2s ease;
+    }
+    .tool-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: #52b788;
+      transform: translateY(-2px);
+    }
+    .tool-info h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; color: #ffffff; }
+    .tool-info p { font-size: 13px; color: #94a3b8; }
+    .btn-launch {
+      display: inline-block;
+      background: #2d5a44;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    .btn-launch:hover { opacity: 0.9; }
+    .pledge-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .footer { text-align: center; font-size: 12px; color: #64748b; }
+    @media (max-width: 580px) {
+      .container { padding: 24px 20px; }
+      .tool-card { flex-direction: column; align-items: flex-start; }
+      .btn-launch { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="badge">Official Digital Apps Hub</span>
+    <h1>Sage Calm Studio</h1>
+    <p class="tagline">Sensory-friendly, guilt-free productivity tools designed with neurodivergent empathy.</p>
+
+    <div class="tool-list">
+      <div class="tool-card">
+        <div class="tool-info">
+          <h3>ADHD Budget Planner</h3>
+          <p>Calm Payoff & Safe-to-Spend Sanctuary</p>
+        </div>
+        <a href="./adhd-budget-planner/" class="btn-launch">Launch App &rarr;</a>
+      </div>      <div class="tool-card">
+        <div class="tool-info">
+          <h3>ADHD Life Planner</h3>
+          <p>Single-Focus Anchor & Low-Dopamine Balance OS</p>
+        </div>
+        <a href="./adhd-life-planner/" class="btn-launch">Launch App &rarr;</a>
+      </div>
+    </div>
+
+    <div class="pledge-box">
+      <strong>ðŸ”’ Data Sovereignty Guarantee:</strong><br>
+      Sage Calm Data Sovereignty: 100% client-side offline storage. Your personal data never leaves your device.
+    </div>
+
+    <div class="footer">
+      &copy; 2026 Sage Calm Studio &bull; Guided by Maya &bull; Zero Subscriptions
+    </div>
+  </div>
+</body>
+</html>
