@@ -1,0 +1,95 @@
+/* Universal Public Demo Top Banner & Conversion Modal */
+.etsy-demo-banner {
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  position: relative;
+}
+
+.etsy-demo-banner a.etsy-demo-cta {
+  background: #ffffff;
+  color: #065f46;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  transition: transform 0.15s ease;
+}
+
+.etsy-demo-banner a.etsy-demo-cta:hover {
+  transform: scale(1.04);
+}
+
+/* Modal Conversion Overlay */
+.etsy-demo-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.etsy-demo-modal-overlay.active {
+  display: flex;
+}
+
+.etsy-demo-modal-card {
+  background: #18181b;
+  color: #f4f4f5;
+  border: 1px solid #27272a;
+  border-radius: 16px;
+  max-width: 440px;
+  width: 100%;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.etsy-demo-modal-card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+.etsy-demo-modal-card p {
+  font-size: 13.5px;
+  color: #a1a1aa;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.etsy-gate-btn-buy {
+  display: inline-block;
+  background: #10b981;
+  color: #064e3b;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.etsy-gate-btn-close {
+  background: transparent;
+  border: 1px solid #3f3f46;
+  color: #a1a1aa;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}

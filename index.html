@@ -60,14 +60,32 @@
     }
     .tool-info h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; color: #ffffff; }
     .tool-info p { font-size: 13px; color: #94a3b8; }
+    .tool-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .btn-demo {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.08);
+      color: #52b788;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 9px 16px;
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .btn-demo:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: #52b788;
+    }
     .btn-launch {
       display: inline-block;
       background: #2d5a44;
       color: #ffffff;
       text-decoration: none;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 700;
-      padding: 10px 20px;
+      padding: 10px 18px;
       border-radius: 999px;
       white-space: nowrap;
       transition: opacity 0.2s;
@@ -103,13 +121,19 @@
           <h3>ADHD Budget Planner</h3>
           <p>Calm Payoff & Safe-to-Spend Sanctuary</p>
         </div>
-        <a href="./adhd-budget-planner/" class="btn-launch">Launch App &rarr;</a>
+        <div class="tool-actions">
+          <a href="./adhd-budget-planner/demo/" class="btn-demo" target="_blank">Try Live Demo &rarr;</a>
+          <a href="./adhd-budget-planner/" class="btn-launch" target="_blank">Full App &rarr;</a>
+        </div>
       </div>      <div class="tool-card">
         <div class="tool-info">
           <h3>ADHD Life Planner</h3>
           <p>Single-Focus Anchor & Low-Dopamine Balance OS</p>
         </div>
-        <a href="./adhd-life-planner/" class="btn-launch">Launch App &rarr;</a>
+        <div class="tool-actions">
+          <a href="./adhd-life-planner/demo/" class="btn-demo" target="_blank">Try Live Demo &rarr;</a>
+          <a href="./adhd-life-planner/" class="btn-launch" target="_blank">Full App &rarr;</a>
+        </div>
       </div>
     </div>
 

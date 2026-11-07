@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+  <title>ADHD Budget Planner - Calm Money & Payoff Planner</title>
+  <meta name="description" content="A calm, offline, low-stimulation budget planner engineered for ADHD brains. What is safe to spend today, and the date you are debt-free.">
+  <meta name="theme-color" content="#134e4a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="ADHD Budget Planner">
+  <!-- Demo mode: no manifest -->
+  <link rel="icon" type="image/svg+xml" href="../assets/icon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/tutorial.css">
+  <link rel="stylesheet" href="./demo-banner.css">
+</head>
+<body data-theme="sage-calm">
+
+  
+  <!-- Etsy Live Demo Header Bar -->
+  <aside class="etsy-demo-bar" aria-label="Live Preview Banner">
+    <div class="etsy-demo-badge">
+      <span class="etsy-demo-pill">✨ Live Preview</span>
+      <span class="etsy-demo-text">Interactive Demo (Temporary Session)</span>
+    </div>
+    <a href="https://www.etsy.com" target="_blank" rel="noopener" class="etsy-demo-cta">
+      🛒 Get Full App on Etsy
+    </a>
+  </aside>
+
+  <div class="app-container">
+
+    <!-- Navigation Dock (Mobile Bottom Bar / Desktop Sidebar) -->
+    <nav class="nav-dock" aria-label="Main Navigation">
+      <button type="button" class="nav-tab active" data-nav="today" aria-label="Today Hub">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <circle cx="12" cy="12" r="9"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 3"/>
+        </svg>
+        <span>Today</span>
+      </button>
+
+      <button type="button" class="nav-tab" data-nav="bills" aria-label="Bills Runway">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+        </svg>
+        <span>Bills</span>
+      </button>
+
+      <button type="button" class="nav-tab" data-nav="debt" aria-label="Debt Payoff">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        <span>Debt</span>
+      </button>
+
+      <button type="button" class="nav-tab" data-nav="planner" aria-label="Month Planner">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        <span>Planner</span>
+      </button>
+
+      <button type="button" class="nav-tab" data-nav="savings" aria-label="Savings Goals">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span>Savings</span>
+      </button>
+
+      <button type="button" class="nav-tab" data-nav="vault" aria-label="Impulse Vault">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span>Vault</span>
+      </button>
+
+      <button type="button" class="nav-tab" data-nav="braindump" aria-label="Brain Dump">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+        </svg>
+        <span>Notes</span>
+      </button>
+
+      <button type="button" class="nav-tab" data-nav="settings" aria-label="Settings">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <main class="main-wrapper">
+
+      <!-- Top Header & Brand -->
+      <header class="top-header">
+        <div class="app-brand">
+          <img src="../assets/icon.svg" alt="ADHD Budget Planner Logo" class="brand-icon">
+          <h1 class="brand-title">ADHD Budget Planner</h1>
+        </div>
+
+        <div class="top-actions">
+          <button type="button" class="btn-pill" id="btn-open-tutorials" style="background: var(--accent-light); color: var(--accent-primary); font-weight: 700;">
+            <span>👩‍💼</span>
+            <span class="btn-text-full">Maya's Guided Tour</span>
+            <span class="btn-text-short">Tour</span>
+          </button>
+
+          <button type="button" class="btn-pill" id="btn-toggle-zombie" aria-label="Toggle Zombie Mode">
+            <span>🧟</span>
+            <span class="btn-text-full">Zombie Mode</span>
+            <span class="btn-text-short">Zombie</span>
+          </button>
+
+          <button type="button" class="help-badge" data-help="data.privacy" aria-label="Privacy & Offline Help">?</button>
+        </div>
+      </header>
+
+      <!-- ============================================== -->
+      <!-- SCREEN 1: TODAY (THE NEURODIVERGENT HUB)      -->
+      <!-- ============================================== -->
+      <section class="screen active" id="screen-today">
+        
+        <!-- Hero Metric Card: Safe to Spend Today -->
+        <div class="hero-card">
+          <div class="hero-card-head">
+            <span class="eyebrow-tag">Available Today</span>
+            <button type="button" class="help-badge" data-help="hero.safetospend" aria-label="About Safe to Spend">?</button>
+          </div>
+
+          <div class="hero-number-wrap">
+            <div class="hero-number" id="hero-safe-num">&mdash;</div>
+            <div class="hero-subtitle" id="hero-sub-text">Calculating...</div>
+          </div>
+
+          <!-- Paycheck Runway Progress -->
+          <div class="runway-wrapper">
+            <div class="runway-header">
+              <span>Paycheck Runway</span>
+              <span id="runway-label">14 days</span>
+            </div>
+            <div class="runway-track">
+              <div class="runway-fill" id="runway-fill" style="width: 50%;"></div>
+            </div>
+          </div>
+
+          <!-- Hero Quick Stats -->
+          <div class="hero-stats-row">
+            <div class="stat-item">
+              <span class="stat-label">In Checking</span>
+              <span class="stat-val" id="stat-checking">&mdash;</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Bills Due Before Pay</span>
+              <span class="stat-val" id="stat-bills-due" style="color: var(--accent-gold);">&mdash;</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Time to Pay</span>
+              <span class="stat-val" id="stat-days-left">&mdash;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zombie Mode Widget (Active when Zombie Mode is toggled) -->
+        <div class="zombie-widget" id="zombie-widget">
+          <h2 style="font-size: 18px; margin-bottom: 8px;">🧟 Low Energy / Zombie Mode</h2>
+          <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">
+            You have <strong id="zombie-avail-num" style="color: var(--accent-primary);">&mdash;</strong> left today.
+          </p>
+          <div style="display: flex; gap: 8px; max-width: 340px; margin: 0 auto;">
+            <input type="number" id="zombie-spend-input" class="input-field" placeholder="Can I spend $..." style="text-align: center;">
+            <button type="button" class="btn-primary" id="btn-zombie-calc" style="width: auto; padding: 10px 18px;">Check</button>
+          </div>
+          <div id="zombie-calc-result" style="margin-top: 12px; font-weight: 600; font-size: 14px;"></div>
+        </div>
+
+        <!-- Low Friction Quick-Log Shortcuts -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding: 0 2px;">
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dim);">Quick 1-Tap Log</span>
+          <button type="button" id="btn-edit-quick-spends" class="btn-pill" style="font-size: 11px; padding: 3px 8px; gap: 4px; border: none; background: var(--surface-hover); color: var(--accent-primary); font-weight: 600;">
+            <span>⚙️</span>
+            <span>Customize</span>
+          </button>
+        </div>
+        <div class="quick-log-grid" id="quick-log-grid">
+          <button type="button" class="btn-quick" data-quick-spend="525" data-quick-label="Coffee">
+            <span class="btn-quick-icon">☕</span>
+            <span class="btn-quick-label">Coffee</span>
+            <span class="btn-quick-price">$5.25</span>
+          </button>
+
+          <button type="button" class="btn-quick" data-quick-spend="1250" data-quick-label="Lunch">
+            <span class="btn-quick-icon">🥗</span>
+            <span class="btn-quick-label">Lunch</span>
+            <span class="btn-quick-price">$12.50</span>
+          </button>
+
+          <button type="button" class="btn-quick" data-quick-spend="4500" data-quick-label="Groceries">
+            <span class="btn-quick-icon">🛒</span>
+            <span class="btn-quick-label">Groceries</span>
+            <span class="btn-quick-price">$45.00</span>
+          </button>
+
+          <button type="button" class="btn-quick" id="btn-log-custom" style="border-style: dashed;">
+            <span class="btn-quick-icon">➕</span>
+            <span class="btn-quick-label">Custom</span>
+            <span class="btn-quick-price">Log Spend</span>
+          </button>
+        </div>
+
+        <!-- 48-Hour Impulse Vault Teaser -->
+        <div class="vault-teaser">
+          <div class="vault-info">
+            <div class="vault-badge-icon">⏳</div>
+            <div>
+              <div style="font-weight: 700; font-size: 15px;">48-Hour Impulse Vault</div>
+              <div style="font-size: 12px; color: var(--text-muted);">
+                <span id="vault-cooling-count">0</span> items cooling off right now
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn-pill" id="btn-park-impulse" style="background: var(--surface-card);">
+            <span>Park Impulse</span>
+          </button>
+        </div>
+
+        <!-- Three Small Quests (Daily Quest System) -->
+        <div class="quests-card">
+          <div class="card-title-row">
+            <h2 class="card-title">Three Small Quests</h2>
+            <button type="button" class="help-badge" data-help="hero.quests" aria-label="About Quests">?</button>
+          </div>
+          <div id="quests-list"></div>
+        </div>
+
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCREEN 2: MONTH PLANNER (CALENDAR + PACE)     -->
+      <!-- ============================================== -->
+      <section class="screen" id="screen-planner">
+        <div class="quests-card">
+          <div class="card-title-row">
+            <div>
+              <h2 class="card-title" id="planner-month-title">This Month</h2>
+              <p style="font-size: 12px; color: var(--text-muted);">Bills ● Paydays ★ · Tap a day to log a spend</p>
+            </div>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <button type="button" class="btn-pill" id="btn-prev-month" style="padding: 6px 10px;">‹</button>
+              <button type="button" class="btn-pill" id="btn-next-month" style="padding: 6px 10px;">›</button>
+            </div>
+          </div>
+
+          <!-- Calendar Day Headers -->
+          <div class="calendar-grid">
+            <div class="calendar-day-header">Su</div>
+            <div class="calendar-day-header">Mo</div>
+            <div class="calendar-day-header">Tu</div>
+            <div class="calendar-day-header">We</div>
+            <div class="calendar-day-header">Th</div>
+            <div class="calendar-day-header">Fr</div>
+            <div class="calendar-day-header">Sa</div>
+          </div>
+          <div class="calendar-grid" id="calendar-days-grid"></div>
+
+          <!-- Monthly Pace Summary -->
+          <div style="margin-top: 16px; padding: 14px; background: var(--surface-hover); border-radius: var(--radius-md);">
+            <div style="font-size: 12px; text-transform: uppercase; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">Month at a Glance</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px;">
+              <div>
+                <div class="stat-label">Total Income</div>
+                <div class="stat-val" id="planner-income-total" style="color: var(--accent-primary);">—</div>
+              </div>
+              <div>
+                <div class="stat-label">Total Bills</div>
+                <div class="stat-val" id="planner-bills-total" style="color: var(--accent-gold);">—</div>
+              </div>
+              <div>
+                <div class="stat-label">Spent so far</div>
+                <div class="stat-val" id="planner-spent-total">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="quests-card">
+          <div class="card-title-row">
+            <h2 class="card-title">Recent Spending</h2>
+          </div>
+          <div id="recent-tx-list" class="tx-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCREEN 3: SAVINGS GOALS & SINKING FUNDS        -->
+      <!-- ============================================== -->
+      <section class="screen" id="screen-savings">
+        <div class="quests-card">
+          <div class="card-title-row">
+            <div>
+              <h2 class="card-title">Savings Goals</h2>
+              <p style="font-size: 12px; color: var(--text-muted);">Sinking funds, emergency cushions & dreams</p>
+            </div>
+            <button type="button" class="btn-pill" style="background: var(--accent-light); color: var(--accent-primary);" onclick="document.getElementById('modal-add-goal').classList.add('open')">+ Add Goal</button>
+          </div>
+          <div id="savings-goals-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCREEN 4: BILLS (SOONEST-FIRST TIMELINE)       -->
+      <!-- ============================================== -->
+      <section class="screen" id="screen-bills">
+        <div class="quests-card">
+          <div class="card-title-row">
+            <div>
+              <h2 class="card-title">Bills Runway</h2>
+              <p style="font-size: 12px; color: var(--text-muted);">Soonest first · Money held back automatically</p>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" class="btn-pill" id="btn-open-add-bill" style="background: var(--accent-light); color: var(--accent-primary);" onclick="document.getElementById('modal-add-bill').classList.add('open')">+ Add Bill</button>
+              <button type="button" class="help-badge" data-help="bills.soonest">?</button>
+            </div>
+          </div>
+          <div id="bills-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCREEN 3: DEBT CRUSHER (SNOWBALL & AVALANCHE)  -->
+      <!-- ============================================== -->
+      <section class="screen" id="screen-debt">
+        <div class="quests-card">
+          <div class="card-title-row">
+            <div>
+              <h2 class="card-title">Debt Crusher Engine</h2>
+              <p style="font-size: 12px; color: var(--text-muted);">Snowball momentum for ADHD dopamine wins</p>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" class="btn-pill" style="background: var(--accent-light); color: var(--accent-primary);" onclick="document.getElementById('modal-add-debt').classList.add('open')">+ Add Debt</button>
+              <button type="button" class="help-badge" data-help="debt.snowball">?</button>
+            </div>
+          </div>
+
+          <!-- Debt Free Date Simulation Card -->
+          <div id="debt-simulation-result" style="background: var(--surface-hover); border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px;">
+            <div style="font-size: 12px; text-transform: uppercase; font-weight: 700; color: var(--text-dim);">Projected Debt-Free Milestone</div>
+            <div id="debt-free-date" style="font-size: 24px; font-weight: 800; color: var(--accent-primary); margin: 4px 0;">&mdash;</div>
+            <div style="font-size: 13px; color: var(--text-muted);">
+              Total interest over plan: <strong id="debt-total-interest">&mdash;</strong>
+            </div>
+          </div>
+
+          <div id="debts-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCREEN 4: IMPULSE VAULT (DOPAMINE BUFFER)      -->
+      <!-- ============================================== -->
+      <section class="screen" id="screen-vault">
+        <div class="quests-card">
+          <div class="card-title-row">
+            <div>
+              <h2 class="card-title">48-Hour Impulse Vault</h2>
+              <p style="font-size: 12px; color: var(--text-muted);">Cool off impulse desires · 82% naturally fade</p>
+            </div>
+            <button type="button" class="help-badge" data-help="hero.impulse">?</button>
+          </div>
+          <div id="vault-items-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCREEN 5: BRAIN DUMP & QUICK NOTES             -->
+      <!-- ============================================== -->
+      <section class="screen" id="screen-braindump">
+        <div class="quests-card">
+          <div class="card-title-row">
+            <div>
+              <h2 class="card-title">Brain Dump Scratchpad</h2>
+              <p style="font-size: 12px; color: var(--text-muted);">Get chaotic financial thoughts out of your head</p>
+            </div>
+          </div>
+
+          <form id="form-add-braindump" style="display: flex; gap: 8px; margin-bottom: 16px;">
+            <input type="text" id="input-braindump" class="input-field" placeholder="Dump a thought, reminder, or spend..." required>
+            <button type="submit" class="btn-primary" style="width: auto; padding: 10px 18px;">Dump</button>
+          </form>
+
+          <div id="braindump-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================================== -->
+      <!-- SCREEN 6: SETTINGS & DATA PRIVACY              -->
+      <!-- ============================================== -->
+      <section class="screen" id="screen-settings">
+        
+        <!-- Update Checking Balance -->
+        <div class="quests-card">
+          <h2 class="card-title" style="margin-bottom: 12px;">Update Checking Balance</h2>
+          <form id="form-update-balance" style="display: flex; gap: 8px;">
+            <input type="number" step="0.01" id="settings-balance-input" class="input-field" placeholder="Current bank balance ($)" required>
+            <button type="submit" class="btn-primary" style="width: auto; padding: 10px 18px;">Update</button>
+          </form>
+        </div>
+
+        <!-- Income Schedules -->
+        <div class="quests-card">
+          <div class="card-title-row">
+            <h2 class="card-title">Income & Payday Schedule</h2>
+            <button type="button" class="btn-pill" id="btn-open-add-income" style="background: var(--accent-light); color: var(--accent-primary);" onclick="document.getElementById('modal-add-income').classList.add('open')">+ Add Pay</button>
+          </div>
+          <div id="income-list"></div>
+        </div>
+
+        <!-- Pinned Quick Logs -->
+        <div class="quests-card">
+          <div class="card-title-row">
+            <h2 class="card-title">Pinned Quick-Log Shortcuts</h2>
+            <button type="button" class="btn-pill" id="btn-open-quick-settings" style="background: var(--accent-light); color: var(--accent-primary); font-weight: 600;">⚙️ Customize</button>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5;">
+            Customize the 1-tap buttons on your Today dashboard to match your personal spending routine.
+          </p>
+          <div id="settings-quick-preview" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+        </div>
+
+        <!-- Theme Picker -->
+        <div class="quests-card">
+          <h2 class="card-title" style="margin-bottom: 12px;">Calm Neurodivergent Theme</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px;">
+            <button type="button" class="btn-pill" data-set-theme="sage-calm">🌿 Sage Calm</button>
+            <button type="button" class="btn-pill" data-set-theme="oled-dark">🌑 OLED Dark</button>
+            <button type="button" class="btn-pill" data-set-theme="warm-earth">🏜️ Warm Earth</button>
+            <button type="button" class="btn-pill" data-set-theme="high-contrast">👁️ High Contrast</button>
+          </div>
+        </div>
+
+        <!-- 100% Offline Data & Backups -->
+        <div class="quests-card">
+          <h2 class="card-title" style="margin-bottom: 8px;">Offline Data & Backups</h2>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+            100% stored on your device. No cloud servers, no trackers. Download a backup monthly to safeguard your numbers.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button type="button" class="btn-primary" id="btn-download-backup">💾 Download Backup (.json)</button>
+            <button type="button" class="btn-pill" id="btn-export-csv" style="justify-content: center; padding: 12px;">📊 Export Spending to Excel / CSV</button>
+            
+            <label class="btn-pill" style="justify-content: center; padding: 12px; cursor: pointer;">
+              <span>📂 Restore Backup File</span>
+              <input type="file" id="file-restore-backup" accept=".json" hidden>
+            </label>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- MODAL: CUSTOM SPEND LOGGING                    -->
+  <!-- ============================================== -->
+  <div class="modal-overlay" id="modal-custom-spend">
+    <div class="modal-dialog">
+      <div class="card-title-row">
+        <h3 class="card-title">Log a Spend</h3>
+        <button type="button" class="btn-pill" data-close-modal>✕</button>
+      </div>
+      <form id="form-custom-spend">
+        <div class="input-group">
+          <label class="input-label" for="spend-amount">Amount ($)</label>
+          <input type="number" step="0.01" id="spend-amount" class="input-field" placeholder="0.00" required autofocus>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="spend-category">Category</label>
+          <select id="spend-category" class="input-field">
+            <option value="Food & Dining">Food & Dining</option>
+            <option value="Groceries">Groceries</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Transit">Transit & Fuel</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="General">General</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="spend-note">Note / Place</label>
+          <input type="text" id="spend-note" class="input-field" placeholder="e.g. Target, Subway, Coffee">
+        </div>
+        <button type="submit" class="btn-primary">Log It</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- MODAL: CUSTOMIZE PINNED QUICK SPENDS           -->
+  <!-- ============================================== -->
+  <div class="modal-overlay" id="modal-customize-quick-spends">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="card-title-row">
+        <h3 class="card-title">📌 Pinned Quick Spends</h3>
+        <button type="button" class="btn-pill" data-close-modal>✕</button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5;">
+        Pin up to 3 frequent routine expenses for instant 1-tap logging. Choose your own labels, amounts, and icons!
+      </p>
+
+      <form id="form-customize-quick-spends">
+        <!-- Slot 0 -->
+        <div class="quick-spend-edit-card" style="background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 12px; margin-bottom: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 13px; color: var(--text-main);">Shortcut #1</span>
+            <button type="button" class="btn-pill btn-clear-quick-slot" data-slot="0" style="padding: 2px 8px; font-size: 11px; color: var(--text-dim);">Clear Slot</button>
+          </div>
+          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <div style="width: 54px;">
+              <label class="input-label" style="font-size: 11px;" for="quick-icon-0">Icon</label>
+              <input type="text" id="quick-icon-0" class="input-field" maxlength="4" style="text-align: center; font-size: 20px; padding: 6px 2px;" placeholder="☕">
+            </div>
+            <div style="flex: 1;">
+              <label class="input-label" style="font-size: 11px;" for="quick-label-0">Label</label>
+              <input type="text" id="quick-label-0" class="input-field" placeholder="e.g. Coffee" style="padding: 8px 10px;">
+            </div>
+            <div style="width: 100px;">
+              <label class="input-label" style="font-size: 11px;" for="quick-amount-0">Amount ($)</label>
+              <input type="number" step="0.01" id="quick-amount-0" class="input-field" placeholder="0.00" style="padding: 8px 10px;">
+            </div>
+          </div>
+          <div style="display: flex; gap: 4px; align-items: center; overflow-x: auto; padding-bottom: 2px;">
+            <span style="font-size: 11px; color: var(--text-dim); margin-right: 2px;">Presets:</span>
+            <button type="button" class="btn-pill quick-emoji-pick" data-slot="0" data-emoji="☕" data-label="Coffee" data-amount="5.25" style="padding: 2px 6px; font-size: 11px;">☕ Coffee</button>
+            <button type="button" class="btn-pill quick-emoji-pick" data-slot="0" data-emoji="🍵" data-label="Tea / Matcha" data-amount="4.50" style="padding: 2px 6px; font-size: 11px;">🍵 Tea</button>
+            <button type="button" class="btn-pill quick-emoji-pick" data-slot="0" data-emoji="⚡" data-label="Energy Drink" data-amount="3.50" style="padding: 2px 6px; font-size: 11px;">⚡ Drink</button>
+          </div>
+        </div>
+
+        <!-- Slot 1 -->
+        <div class="quick-spend-edit-card" style="background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 12px; margin-bottom: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 13px; color: var(--text-main);">Shortcut #2</span>
+            <button type="button" class="btn-pill btn-clear-quick-slot" data-slot="1" style="padding: 2px 8px; font-size: 11px; color: var(--text-dim);">Clear Slot</button>
+          </div>
+          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <div style="width: 54px;">
+              <label class="input-label" style="font-size: 11px;" for="quick-icon-1">Icon</label>
+              <input type="text" id="quick-icon-1" class="input-field" maxlength="4" style="text-align: center; font-size: 20px; padding: 6px 2px;" placeholder="🥗">
+            </div>
+            <div style="flex: 1;">
+              <label class="input-label" style="font-size: 11px;" for="quick-label-1">Label</label>
+              <input type="text" id="quick-label-1" class="input-field" placeholder="e.g. Lunch" style="padding: 8px 10px;">
+            </div>
+            <div style="width: 100px;">
+              <label class="input-label" style="font-size: 11px;" for="quick-amount-1">Amount ($)</label>
+              <input type="number" step="0.01" id="quick-amount-1" class="input-field" placeholder="0.00" style="padding: 8px 10px;">
+            </div>
+          </div>
+          <div style="display: flex; gap: 4px; align-items: center; overflow-x: auto; padding-bottom: 2px;">
+            <span style="font-size: 11px; color: var(--text-dim); margin-right: 2px;">Presets:</span>
+            <button type="button" class="btn-pill quick-emoji-pick" data-slot="1" data-emoji="🥗" data-label="Lunch" data-amount="12.50" style="padding: 2px 6px; font-size: 11px;">🥗 Lunch</button>
+            <button type="button" class="btn-pill quick-emoji-pick" data-slot="1" data-emoji="🍕" data-label="Takeout" data-amount="18.00" style="padding: 2px 6px; font-size: 11px;">🍕 Takeout</button>
+            <button type="button" class="btn-pill quick-emoji-pick" data-slot="1" data-emoji="🥪" data-label="Snack" data-amount="8.50" style="padding: 2px 6px; font-size: 11px;">🥪 Snack</button>
+          </div>
+        </div>
+
+        <!-- Slot 2 -->
+        <div class="quick-spend-edit-card" style="background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 12px; margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 13px; color: var(--text-main);">Shortcut #3</span>
+            <button type="button" class="btn-pill btn-clear-quick-slot" data-slot="2" style="padding: 2px 8px; font-size: 11px; color: var(--text-dim);">Clear Slot</button>
+          </div>
+          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <div style="width: 54px;">
+              <label class="input-label" style="font-size: 11px;" for="quick-icon-2">Icon</label>
+              <input type="text" id="quick-icon-2" class="input-field" maxlength="4" style="text-align: center; font-size: 20px; padding: 6px 2px;" placeholder="🛒">
+            </div>
+            <div style="flex: 1;">
+              <label class="input-label" style="font-size: 11px;" for="quick-label-2">Label</label>
+              <input type="text" id="quick-label-2" class="input-field" placeholder="e.g. Groceries" style="padding: 8px 10px;">
+            </div>
+            <div style="width: 100px;">
+              <label class="input-label" style="font-size: 11px;" for="quick-amount-2">Amount ($)</label>
+              <input type="number" step="0.01" id="quick-amount-2" class="input-field" placeholder="0.00" style="padding: 8px 10px;">
+            </div>
+          </div>
+          <div style="display: flex; gap: 4px; align-items: center; overflow-x: auto; padding-bottom: 2px;">
+            <span style="font-size: 11px; color: var(--text-dim); margin-right: 2px;">Presets:</span>
+            <button type="button" class="btn-pill quick-emoji-pick" data-slot="2" data-emoji="🛒" data-label="Groceries" data-amount="45.00" style="padding: 2px 6px; font-size: 11px;">🛒 Groceries</button>
+            <button type="button" class="btn-pill quick-emoji-pick" data-slot="2" data-emoji="🚗" data-label="Gas / Fuel" data-amount="35.00" style="padding: 2px 6px; font-size: 11px;">🚗 Gas</button>
+            <button type="button" class="btn-pill quick-emoji-pick" data-slot="2" data-emoji="🚌" data-label="Transit" data-amount="2.75" style="padding: 2px 6px; font-size: 11px;">🚌 Transit</button>
+            <button type="button" class="btn-pill quick-emoji-pick" data-slot="2" data-emoji="💊" data-label="Pharmacy" data-amount="15.00" style="padding: 2px 6px; font-size: 11px;">💊 Meds</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" style="font-weight: 700; padding: 12px;">Save Pinned Shortcuts</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- MODAL: PARK AN IMPULSE (48-HOUR VAULT)         -->
+  <!-- ============================================== -->
+  <div class="modal-overlay" id="modal-impulse-vault">
+    <div class="modal-dialog">
+      <div class="card-title-row">
+        <h3 class="card-title">Park an Impulse (48 Hours)</h3>
+        <button type="button" class="btn-pill" data-close-modal>✕</button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+        Satisfy your urge without spending. If you still want it in 48 hours, buy it guilt-free!
+      </p>
+      <form id="form-impulse-vault">
+        <div class="input-group">
+          <label class="input-label" for="impulse-title">What do you want to buy?</label>
+          <input type="text" id="impulse-title" class="input-field" placeholder="e.g. Mechanical Keyboard" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="impulse-price">Price ($)</label>
+          <input type="number" step="0.01" id="impulse-price" class="input-field" placeholder="0.00" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="impulse-notes">Why do you want it?</label>
+          <textarea id="impulse-notes" class="input-field" rows="2" placeholder="Saw on social media, bored, etc."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="background: var(--accent-gold);">Park in Vault</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD SAVINGS GOAL -->
+  <div class="modal-overlay" id="modal-add-goal">
+    <div class="modal-dialog">
+      <div class="card-title-row">
+        <h3 class="card-title">Add a Savings Goal</h3>
+        <button type="button" class="btn-pill" data-close-modal>✕</button>
+      </div>
+      <form id="form-add-goal">
+        <div class="input-group">
+          <label class="input-label" for="goal-name">Goal Name</label>
+          <input type="text" id="goal-name" class="input-field" placeholder="e.g. Emergency Fund, Vacation" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="goal-target">Target Amount ($)</label>
+          <input type="number" step="0.01" id="goal-target" class="input-field" placeholder="0.00" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="goal-saved">Already Saved ($)</label>
+          <input type="number" step="0.01" id="goal-saved" class="input-field" value="0">
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="goal-monthly">Monthly Contribution ($)</label>
+          <input type="number" step="0.01" id="goal-monthly" class="input-field" placeholder="0.00">
+        </div>
+        <button type="submit" class="btn-primary">Add Goal</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Data Health Banner (Safari 7-day purge warning) -->
+  <div class="data-health-banner" id="data-health-banner">
+    <div class="data-health-icon">🛡️</div>
+    <div class="data-health-text">
+      <strong>Protect your data</strong>
+      Add ADHD Budget Planner to your Home Screen so Safari never clears your numbers.
+    </div>
+    <button type="button" class="btn-pill" id="btn-dismiss-health" style="flex-shrink: 0;">Got it</button>
+  </div>
+
+  <!-- MODAL: ADD SAVINGS GOAL (modal-add-bill placeholder) -->
+  
+  <div class="modal-overlay" id="modal-add-bill">
+    <div class="modal-dialog">
+      <div class="card-title-row">
+        <h3 class="card-title">Add a Bill</h3>
+        <button type="button" class="btn-pill" data-close-modal>✕</button>
+      </div>
+      <form id="form-add-bill">
+        <div class="input-group">
+          <label class="input-label" for="bill-name">Bill Name</label>
+          <input type="text" id="bill-name" class="input-field" placeholder="e.g. Rent, Phone, Electric" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="bill-amount">Amount ($)</label>
+          <input type="number" step="0.01" id="bill-amount" class="input-field" placeholder="0.00" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="bill-day">Day of Month Due</label>
+          <input type="number" min="1" max="31" id="bill-day" class="input-field" value="1" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="bill-recurrence">How Often?</label>
+          <select id="bill-recurrence" class="input-field">
+            <option value="monthly">Once a month</option>
+            <option value="twiceday">Twice a month (1st and 15th)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary">Add Bill</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- MODAL: ADD INCOME                              -->
+  <!-- ============================================== -->
+  <div class="modal-overlay" id="modal-add-income">
+    <div class="modal-dialog">
+      <div class="card-title-row">
+        <h3 class="card-title">Add Income / Paycheck</h3>
+        <button type="button" class="btn-pill" data-close-modal>✕</button>
+      </div>
+      <form id="form-add-income">
+        <div class="input-group">
+          <label class="input-label" for="income-label">Income Label</label>
+          <input type="text" id="income-label" class="input-field" placeholder="e.g. Primary Job Paycheck" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="income-amount">Net Amount Landing ($)</label>
+          <input type="number" step="0.01" id="income-amount" class="input-field" placeholder="0.00" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="income-cycle">Pay Frequency</label>
+          <select id="income-cycle" class="input-field">
+            <option value="biweekly">Every 2 Weeks (Bi-weekly)</option>
+            <option value="weekly">Weekly</option>
+            <option value="semimonthly">Twice a Month (Semi-monthly)</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="income-anchor">Next Payday Date</label>
+          <input type="date" id="income-anchor" class="input-field" required>
+        </div>
+        <button type="submit" class="btn-primary">Save Income</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- MODAL: ADD DEBT                                -->
+  <!-- ============================================== -->
+  <div class="modal-overlay" id="modal-add-debt">
+    <div class="modal-dialog">
+      <div class="card-title-row">
+        <h3 class="card-title">Add a Debt / Credit Card</h3>
+        <button type="button" class="btn-pill" data-close-modal>✕</button>
+      </div>
+      <form id="form-add-debt">
+        <div class="input-group">
+          <label class="input-label" for="debt-name">Debt Name</label>
+          <input type="text" id="debt-name" class="input-field" placeholder="e.g. Chase Freedom Card" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="debt-balance">Current Balance ($)</label>
+          <input type="number" step="0.01" id="debt-balance" class="input-field" placeholder="0.00" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="debt-apr">Interest Rate (APR %)</label>
+          <input type="number" step="0.01" id="debt-apr" class="input-field" placeholder="e.g. 21.99" value="19.99">
+        </div>
+        <div class="input-group">
+          <label class="input-label" for="debt-minpay">Minimum Monthly Payment ($)</label>
+          <input type="number" step="0.01" id="debt-minpay" class="input-field" placeholder="e.g. 35.00" value="35.00">
+        </div>
+        <button type="submit" class="btn-primary">Add Debt</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- MODAL: 4-TIER CONTEXTUAL ADHD HELP             -->
+  <!-- ============================================== -->
+  <div class="modal-overlay" id="modal-help">
+    <div class="modal-dialog">
+      <div class="card-title-row">
+        <h3 class="card-title" id="help-modal-title">Help Guide</h3>
+        <button type="button" class="btn-pill" data-close-modal>✕</button>
+      </div>
+
+      <div class="help-tier">
+        <div class="help-tier-title">What this is</div>
+        <div class="help-tier-body" id="help-what">&mdash;</div>
+      </div>
+
+      <div class="help-tier">
+        <div class="help-tier-title">What to do here</div>
+        <div class="help-tier-body" id="help-todo">&mdash;</div>
+      </div>
+
+      <div class="help-tier">
+        <div class="help-tier-title">Why it helps your brain</div>
+        <div class="help-tier-body" id="help-why">&mdash;</div>
+      </div>
+
+      <div class="help-tier">
+        <div class="help-tier-title">Good to know</div>
+        <div class="help-tier-body" id="help-note">&mdash;</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- MODAL: WELCOME ONBOARDING (HOSTED BY MAYA)    -->
+  <!-- ============================================== -->
+  <div class="modal-overlay" id="modal-welcome-tour">
+    <div class="modal-dialog" style="text-align: center; padding: 32px 24px; max-width: 460px; border: 1px solid var(--border-subtle); box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);">
+      <div style="font-size: 52px; margin-bottom: 12px; line-height: 1;">👩‍💼</div>
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 8px;">
+        Hi, I'm Maya! Welcome to ADHD Budget Planner 🌿
+      </h2>
+      <div style="background: #f0fdf4; border-left: 3px solid #059669; padding: 8px 12px; border-radius: 6px; font-size: 12.5px; color: #065f46; font-weight: 600; text-align: left; margin-bottom: 16px;">
+        Zero formulas · No bank passwords · 100% offline & private
+      </div>
+      <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 22px; text-align: left;">
+        ADHD money management fails when you're forced to face a blank screen with 10 categories.<br><br>
+        Let's do this together: in <strong>90 seconds</strong>, I will walk you through the basics &mdash; entering payday, locking rent away, and revealing your real daily safe-to-spend number!
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button type="button" class="btn-primary" id="btn-start-first-tour" style="font-size: 15px; padding: 13px; font-weight: 700;">
+          ✨ Start with Maya (Walk Me Through)
+        </button>
+        <button type="button" class="btn-pill" id="btn-welcome-dismiss" data-close-modal style="justify-content: center; padding: 11px; font-size: 13px;">
+          I'll enter my own numbers
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Scripts -->
+    <script src="./demo-guard.js"></script>
+  <script src="../js/engine.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/personas.js"></script>
+  <script src="../js/help-content.js"></script>
+  <script src="../js/tutorials.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/app-extensions.js"></script>
+
+  <!-- Etsy Purchase Conversion Gate Modal -->
+  <div id="etsy-demo-gate-modal" class="etsy-demo-gate-overlay" onclick="if(event.target===this)closeDemoGate()">
+    <div class="etsy-demo-gate-box">
+      <div class="etsy-gate-icon">🔒</div>
+      <div class="etsy-gate-title" id="etsy-gate-modal-title">Unlock with Full Edition</div>
+      <div class="etsy-gate-desc">
+        You are currently in the <strong>Live Demo Sandbox</strong>. Data backups, persistent lifetime storage, and offline home screen installation are unlocked in the full Etsy edition!
+      </div>
+      <div class="etsy-gate-actions">
+        <a href="https://www.etsy.com" target="_blank" rel="noopener" class="etsy-gate-btn-buy">
+          🛒 Unlock Lifetime App on Etsy ($9.00)
+        </a>
+        <button type="button" class="etsy-gate-btn-close" onclick="closeDemoGate()">
+          Keep Exploring Demo
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+/* ADHD Budget Planner (Base Edition) - Minimalist Sage Live Demo Banner */
+
+.etsy-demo-bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: rgba(18, 28, 23, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1.5px solid rgba(88, 129, 87, 0.4);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.etsy-demo-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.etsy-demo-pill {
+  background: rgba(88, 129, 87, 0.25);
+  border: 1px solid rgba(88, 129, 87, 0.5);
+  color: #a3b18a;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.etsy-demo-text {
+  font-size: 12px;
+  color: #a3b18a;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 540px) {
+  .etsy-demo-text {
+    display: none;
+  }
+}
+
+.etsy-demo-cta {
+  background: linear-gradient(135deg, #588157, #3a5a40);
+  color: #f0fdf4 !important;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 7px 14px;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(58, 90, 64, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.etsy-demo-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(88, 129, 87, 0.6);
+}
+
+/* Gated Feature Modal */
+.etsy-demo-gate-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.etsy-demo-gate-overlay.active {
+  display: flex;
+}
+
+.etsy-demo-gate-box {
+  background: #18261e;
+  border: 1.5px solid rgba(88, 129, 87, 0.4);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 440px;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.8);
+}
+
+.etsy-gate-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(88, 129, 87, 0.18);
+  border: 1px solid rgba(88, 129, 87, 0.4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 14px;
+}
+
+.etsy-gate-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #f0fdf4;
+  margin-bottom: 8px;
+}
+
+.etsy-gate-desc {
+  font-size: 13.5px;
+  color: #a3b18a;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.etsy-gate-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.etsy-gate-btn-buy {
+  background: linear-gradient(135deg, #588157, #3a5a40);
+  color: #f0fdf4;
+  padding: 13px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(58, 90, 64, 0.4);
+  transition: transform 0.15s ease;
+}
+
+.etsy-gate-btn-buy:hover {
+  transform: translateY(-1px);
+}
+
+.etsy-gate-btn-close {
+  background: rgba(30, 48, 38, 0.8);
+  border: 1px solid rgba(163, 177, 138, 0.25);
+  color: #dad7cd;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.etsy-gate-btn-close:hover {
+  background: rgba(45, 70, 56, 0.9);
+  color: #f0fdf4;
+}

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>DEMO: ADHD Life Planner | Interactive Live Preview</title>
+  
+  <meta name="description" content="Interactive demo preview of ADHD Life Planner. Explore the daily anchor, dopamine menu, and low-spoons fog mode.">
+  <meta name="theme-color" content="#14261d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Life Planner Demo">
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+  
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/tutorial.css">
+  <link rel="stylesheet" href="demo-banner.css">
+</head>
+<body class="theme-sage-calm" data-theme="sage-calm">
+
+  <!-- Top App Bar -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <img src="../assets/icon.svg" alt="App Logo" class="brand-logo" width="32" height="32">
+      <div>
+        <h1 class="brand-title">ADHD Life Planner</h1>
+      </div>
+      <span class="brand-tag">Live Demo</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn-header-action" id="btn-toggle-fog" title="Toggle Low-Spoons Fog Mode" aria-label="Toggle Fog Mode">🌫️</button>
+      <button class="btn-header-action" id="btn-toggle-sound" title="Toggle Sound Chimes" aria-label="Toggle Sound">🔊</button>
+    </div>
+  </header>
+
+  <!-- Main Application Container -->
+  <main class="app-container">
+
+    <!-- SCREEN 1: TODAY / DAILY FOCUS HUB -->
+    <section class="app-screen active" id="screen-today">
+      
+      <!-- Maya's Calming Welcome Banner -->
+      <div class="maya-greeting-card">
+        <div class="maya-avatar-badge">🌿</div>
+        <div class="maya-greeting-content">
+          <span class="maya-name-tag">Maya • Your Companion</span>
+          <p class="maya-greeting-text" id="maya-greeting-text">Welcome to the live demo! Try clicking the Energy Dial or checking off the Daily Anchor.</p>
+        </div>
+      </div>
+
+      <!-- Energy Dial Selector -->
+      <div class="energy-dial-card" id="energy-dial-bar">
+        <div class="energy-dial-header">
+          <span class="energy-dial-title">⚡ Today's Energy Level</span>
+          <button class="btn-link btn-sm" data-help="fogMode">Why this matters?</button>
+        </div>
+        <div class="energy-pills-row">
+          <button class="energy-pill" data-energy="low">🌧️ Low Spoons</button>
+          <button class="energy-pill active" data-energy="normal">🔋 Steady Normal</button>
+          <button class="energy-pill" data-energy="high">⚡ High Focus</button>
+        </div>
+      </div>
+
+      <!-- The Daily Anchor (Single Focus Win) -->
+      <div class="daily-anchor-card" id="daily-anchor-card">
+        <div class="anchor-card-top">
+          <span class="anchor-card-label">🎯 Today's 1 Focus Anchor</span>
+          <span class="badge badge-subtasks">Single Win Rule</span>
+        </div>
+        <div class="anchor-content-row">
+          <label class="custom-check-label">
+            <input type="checkbox" id="anchor-checkbox" aria-label="Mark daily anchor as completed">
+            <span class="custom-check-box"></span>
+          </label>
+          <input type="text" class="anchor-input-field" id="anchor-input" placeholder="What is the ONE thing that matters today?" value="Drink water, stretch shoulders, and finish 1 work sprint" aria-label="Daily anchor task text">
+        </div>
+      </div>
+
+      <!-- Daily Momentum Bar -->
+      <div class="daily-progress-card">
+        <div class="progress-header-row">
+          <span class="progress-label">Gentle Day Momentum</span>
+          <span class="progress-percent-val" id="daily-progress-percent">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="daily-progress-bar-fill"></div>
+        </div>
+        <p class="progress-message-text" id="daily-progress-message">Gentle start. Every small step counts.</p>
+      </div>
+
+      <!-- Daily Vitals (Water & Meds) -->
+      <div class="vitals-grid">
+        <div class="vital-card">
+          <div class="vital-header">
+            <span class="vital-title">💧 Hydration</span>
+            <span class="vital-count" id="water-count-display">4/8 glasses</span>
+          </div>
+          <div class="water-pills-row" id="water-pills-row"></div>
+          <div class="water-actions-row">
+            <button class="btn btn-secondary btn-sm" id="btn-water-sub">-1</button>
+            <button class="btn btn-primary btn-sm" id="btn-water-add">+1 Drink</button>
+          </div>
+        </div>
+
+        <div class="vital-card">
+          <div class="vital-header">
+            <span class="vital-title">💊 Daily Medicine</span>
+            <span class="vital-count">Routine Check</span>
+          </div>
+          <label class="custom-check-label" style="margin-top: 10px;">
+            <input type="checkbox" id="meds-checkbox" checked aria-label="Medication taken check">
+            <span class="custom-check-box"></span>
+            <span style="margin-left: 8px; font-size: 0.9rem; font-weight: 600;">Taken for today</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Active Micro-Tasks & Dechunker -->
+      <div class="section-header-row">
+        <h2 class="section-title">Active Micro-Tasks</h2>
+        <button class="btn btn-primary btn-sm" id="btn-open-add-task">+ Add Task</button>
+      </div>
+      <div class="tasks-list" id="active-tasks-list"></div>
+
+    </section>
+
+    <!-- SCREEN 2: DOPAMINE MENU -->
+    <section class="app-screen" id="screen-dopamine">
+      <div class="section-header-row">
+        <div>
+          <h2 class="section-title">🍽️ The Dopamine Menu</h2>
+          <p class="empty-sub">Healthy stimulation when executive dysfunction strikes.</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" data-help="dopamineMenu">What is this?</button>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-bottom: 18px;">
+        <button class="btn btn-primary btn-sm" id="btn-dopamine-surprise" style="flex: 1;">✨ Surprise Me (I'm Stuck)</button>
+        <button class="btn btn-secondary btn-sm" id="btn-open-add-dopamine">+ Add Option</button>
+      </div>
+
+      <div class="dopamine-grid">
+        <div class="dopamine-quad-card">
+          <div class="quad-header">
+            <span class="quad-icon">🥗</span>
+            <h3 class="quad-title">Appetizers</h3>
+          </div>
+          <p class="quad-desc">Quick 2–5 min resets to wake up your dopamine receptors.</p>
+          <div class="dopamine-items-list" id="dopamine-list-appetizers"></div>
+        </div>
+
+        <div class="dopamine-quad-card">
+          <div class="quad-header">
+            <span class="quad-icon">🍲</span>
+            <h3 class="quad-title">Entrees</h3>
+          </div>
+          <p class="quad-desc">High-engagement focus projects that create deep flow.</p>
+          <div class="dopamine-items-list" id="dopamine-list-entrees"></div>
+        </div>
+
+        <div class="dopamine-quad-card">
+          <div class="quad-header">
+            <span class="quad-icon">🍟</span>
+            <h3 class="quad-title">Sides</h3>
+          </div>
+          <p class="quad-desc">Passive sensory boosters to run in the background.</p>
+          <div class="dopamine-items-list" id="dopamine-list-sides"></div>
+        </div>
+
+        <div class="dopamine-quad-card">
+          <div class="quad-header">
+            <span class="quad-icon">🍨</span>
+            <h3 class="quad-title">Desserts</h3>
+          </div>
+          <p class="quad-desc">Pure guilt-free rewards to enjoy after showing up.</p>
+          <div class="dopamine-items-list" id="dopamine-list-desserts"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: BRAIN DUMP & DE-CHUNKER -->
+    <section class="app-screen" id="screen-dump">
+      <div class="section-header-row">
+        <div>
+          <h2 class="section-title">🧠 Brain Dump Scratchpad</h2>
+          <p class="empty-sub">Offload racing thoughts before they evaporate.</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="btn-clear-braindump">Clear</button>
+      </div>
+
+      <div class="brain-dump-card">
+        <textarea class="brain-dump-textarea" id="brain-dump-textarea" placeholder="Type anything racing through your mind here... auto-saves instantly as you type." aria-label="Brain dump notes"></textarea>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: ROUTINES & HABITS -->
+    <section class="app-screen" id="screen-routines">
+      <div class="streak-banner-card">
+        <div class="streak-count-wrapper">
+          <span class="streak-flame">🌿</span>
+          <span class="streak-number" id="grace-streak-count">5</span>
+          <span class="streak-label">Day Consistency</span>
+        </div>
+        <div>
+          <span class="grace-pool-badge" id="grace-pool-count">2 Grace Days active</span>
+        </div>
+      </div>
+
+      <div class="routine-slot-card">
+        <h3 class="routine-slot-header">🌅 Morning Launch (3 Anchors)</h3>
+        <div class="routine-items-list" id="routine-list-morning"></div>
+      </div>
+
+      <div class="routine-slot-card">
+        <h3 class="routine-slot-header">☕ Afternoon Recharge</h3>
+        <div class="routine-items-list" id="routine-list-afternoon"></div>
+      </div>
+
+      <div class="routine-slot-card">
+        <h3 class="routine-slot-header">🌙 Evening Wind-down</h3>
+        <div class="routine-items-list" id="routine-list-evening"></div>
+      </div>
+    </section>
+
+    <!-- SCREEN 5: SETTINGS & VAULT -->
+    <section class="app-screen" id="screen-settings">
+      <div class="section-header-row">
+        <h2 class="section-title">⚙️ Settings & Data Vault</h2>
+      </div>
+
+      <div class="routine-slot-card">
+        <h3 class="routine-slot-header">🎨 Visual Theme</h3>
+        <div class="form-group">
+          <label class="form-label" for="setting-theme-select">Choose your calming palette</label>
+          <select class="form-select" id="setting-theme-select">
+            <option value="sage-calm">🌿 Sage Calm (Default)</option>
+            <option value="oled-dark">🌑 OLED Dark (Stealth Night)</option>
+            <option value="warm-earth">🍂 Warm Earth (Terracotta)</option>
+            <option value="high-contrast">👁️ High Contrast (Crisp Focus)</option>
+          </select>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="btn-restart-tour">🌿 Re-open Maya's Guide Tour</button>
+      </div>
+
+      <div class="routine-slot-card">
+        <h3 class="routine-slot-header">💾 Data Privacy & Backup</h3>
+        <p class="empty-sub" style="margin-bottom: 12px;">This is a live demo. Permanent backup export is available in the full release.</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn btn-primary btn-sm" id="btn-export-backup">⬇️ Export JSON Backup</button>
+          <button class="btn btn-secondary btn-sm" id="btn-reset-data">Reset Demo Data</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <button class="nav-tab-btn active" data-tab="today" aria-label="Daily anchor screen">
+      <span class="tab-icon">🎯</span>
+      <span>Today</span>
+    </button>
+    <button class="nav-tab-btn" data-tab="dopamine" aria-label="Dopamine menu screen">
+      <span class="tab-icon">🍽️</span>
+      <span>Dopamine</span>
+    </button>
+    <button class="nav-tab-btn" data-tab="dump" aria-label="Brain dump screen">
+      <span class="tab-icon">🧠</span>
+      <span>Dump</span>
+    </button>
+    <button class="nav-tab-btn" data-tab="routines" aria-label="Routines screen">
+      <span class="tab-icon">🌿</span>
+      <span>Routines</span>
+    </button>
+    <button class="nav-tab-btn" data-tab="settings" aria-label="Settings screen">
+      <span class="tab-icon">⚙️</span>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- MODAL: ADD TASK -->
+  <div class="app-modal" id="modal-add-task">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Micro-Task</h3>
+        <button class="btn-icon" data-close-modal="modal-add-task" aria-label="Close modal">×</button>
+      </div>
+      <form id="form-add-task">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="input-task-title">What do you want to accomplish?</label>
+            <input type="text" class="form-input" id="input-task-title" placeholder="e.g. Wipe down the kitchen counter" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="select-task-energy">Energy level required</label>
+            <select class="form-select" id="select-task-energy">
+              <option value="low">🟢 Low Energy (Survival friendly)</option>
+              <option value="normal" selected>🟡 Normal Energy</option>
+              <option value="high">⚡ High Energy (Deep focus)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="modal-add-task">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD DOPAMINE ITEM -->
+  <div class="app-modal" id="modal-add-dopamine">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Add to Dopamine Menu</h3>
+        <button class="btn-icon" data-close-modal="modal-add-dopamine" aria-label="Close modal">×</button>
+      </div>
+      <form id="form-add-dopamine">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="select-dopamine-category">Menu Section</label>
+            <select class="form-select" id="select-dopamine-category">
+              <option value="appetizers">🥗 Appetizers (2–5 min quick resets)</option>
+              <option value="entrees">🍲 Entrees (Main engaging focus tasks)</option>
+              <option value="sides">🍟 Sides (Background sensory boosters)</option>
+              <option value="desserts">🍨 Desserts (Guilt-free rewards)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-dopamine-title">Activity Title</label>
+            <input type="text" class="form-input" id="input-dopamine-title" placeholder="e.g. Listen to rain sounds with headphones" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-dopamine-duration">Duration or Type</label>
+            <input type="text" class="form-input" id="input-dopamine-duration" placeholder="e.g. 5 min, Passive, 20 min" value="5 min">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="modal-add-dopamine">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save to Menu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: MAYA'S HELP GUIDANCE -->
+  <div class="app-modal" id="modal-maya-help">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="help-modal-title">Guidance from Maya</h3>
+        <button class="btn-icon" data-close-modal="modal-maya-help" aria-label="Close modal">×</button>
+      </div>
+      <div class="modal-body">
+        <p id="help-modal-body" style="line-height: 1.6; white-space: pre-line;"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-close-modal="modal-maya-help">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: WELCOME TOUR -->
+  <div class="app-modal" id="modal-welcome-tour">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Welcome Guide</h3>
+        <button class="btn-icon" data-close-modal="modal-welcome-tour" aria-label="Close modal">×</button>
+      </div>
+      <div class="modal-body" id="tour-content-container"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: ETSY PURCHASE GATE -->
+  <div class="etsy-demo-modal-overlay" id="etsy-demo-gate-modal">
+    <div class="etsy-demo-modal-card">
+      <h3 id="etsy-gate-modal-title">Unlock Full Offline App</h3>
+      <p>Personal data export, local backup restore, and lifetime offline installation are unlocked in the full release on Etsy.</p>
+      <div style="margin: 20px 0; text-align: center;">
+        <span style="font-size: 26px; font-weight: 800; color: #52b788;">$9.00</span>
+        <span style="font-size: 13px; color: #a1a1aa; text-decoration: line-through; margin-left: 6px;">$18.00</span>
+        <p style="font-size: 12px; color: #52b788; margin-top: 4px;">50% Launch Promo • Lifetime Access • No Subscription</p>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn btn-secondary" onclick="window.closeDemoGate()" style="flex: 1;">Keep Browsing</button>
+        <a href="https://sagecalmstudio.etsy.com" target="_blank" class="btn btn-primary" style="flex: 1; text-align: center; text-decoration: none;">Get on Etsy 🌿</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="demo-guard.js"></script>
+  <script src="../js/engine.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/personas.js"></script>
+  <script src="../js/help-content.js"></script>
+  <script src="../js/tutorials.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>
