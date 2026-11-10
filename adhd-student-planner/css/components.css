@@ -464,7 +464,7 @@
 }
 
 /* ========================================================
-   ONBOARDING TUTORIAL & DOM SPOTLIGHT ENGINE (RULE-01, RULE-02)
+   ONBOARDING TUTORIAL & DOM SPOTLIGHT ENGINE (RULE-01, RULE-02, RULE-11)
    ======================================================== */
 .tutorial-overlay {
   position: fixed;
@@ -473,23 +473,25 @@
   right: 0;
   bottom: 0;
   background: rgba(15, 27, 20, 0.65);
-  z-index: 900;
+  z-index: 9990;
   display: none;
   pointer-events: auto;
 }
 
 .tutorial-card {
   position: fixed;
-  z-index: 1050;
+  z-index: 10001;
   background: var(--bg-surface);
   border: 2px solid var(--color-primary);
   border-radius: var(--radius-lg);
-  padding: 22px;
-  box-shadow: var(--shadow-lg);
+  padding: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), 0 0 25px rgba(45, 90, 68, 0.25);
   display: none;
   flex-direction: column;
-  gap: 12px;
-  transition: all var(--transition-fast);
+  gap: 10px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  transition: top 250ms ease, bottom 250ms ease, opacity 200ms ease;
 }
 
 .tutorial-header {
@@ -509,8 +511,24 @@
 
 .tutorial-step-indicator {
   font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.tutorial-section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  border: 1px solid var(--border-strong);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  align-self: flex-start;
 }
 
 .tutorial-title {
@@ -521,7 +539,7 @@
 }
 
 .tutorial-message {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
   line-height: 1.5;
 }
@@ -545,8 +563,8 @@
 /* Spotlight target element highlighting */
 .tutorial-target-active {
   position: relative !important;
-  z-index: 950 !important;
-  box-shadow: 0 0 0 4px var(--color-primary), 0 0 35px rgba(45, 90, 68, 0.45) !important;
+  z-index: 9995 !important;
+  box-shadow: 0 0 0 4px var(--color-accent), 0 0 35px rgba(217, 119, 6, 0.5) !important;
   background: var(--bg-surface) !important;
   border-radius: var(--radius-md) !important;
   transition: all 250ms ease;

@@ -130,6 +130,9 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // Expose switchTab globally for tour synchronization
+  window.switchStudentTab = switchTab;
+
   function setupEventListeners() {
     // Fog Mode Toggle in Header
     const btnFog = document.getElementById('btn-toggle-fog');
