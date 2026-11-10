@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14261d"/>
+      <stop offset="100%" stop-color="#0a140f"/>
+    </linearGradient>
+    <linearGradient id="sageGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a7f3d0"/>
+      <stop offset="50%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="capGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3d755a"/>
+      <stop offset="100%" stop-color="#1c382b"/>
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- App Shell Background with squircle corners -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+  <rect x="12" y="12" width="488" height="488" rx="100" fill="none" stroke="#254636" stroke-width="3" opacity="0.6"/>
+
+  <!-- Golden Focus Halo -->
+  <circle cx="256" cy="240" r="130" fill="none" stroke="url(#goldGrad)" stroke-width="3" stroke-dasharray="10 8" opacity="0.75"/>
+  <circle cx="256" cy="240" r="160" fill="none" stroke="#234433" stroke-width="2" opacity="0.4"/>
+
+  <!-- Academic Mortarboard / Student Cap Silhouette -->
+  <!-- Top Diamond -->
+  <polygon points="256,120 400,185 256,250 112,185" fill="url(#capGrad)" stroke="#4ade80" stroke-width="3"/>
+  <polygon points="256,135 375,185 256,235 137,185" fill="#1b3327" opacity="0.6"/>
+
+  <!-- Cap Skull Base -->
+  <path d="M 172 212 L 172 280 C 172 320 340 320 340 280 L 340 212" fill="#152b20" stroke="#2d5a44" stroke-width="3"/>
+
+  <!-- Tassel & Golden Charm -->
+  <path d="M 256 185 Q 360 210 370 270" fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="256" cy="185" r="7" fill="url(#goldGrad)"/>
+  <circle cx="370" cy="275" r="8" fill="url(#goldGrad)" filter="url(#softGlow)"/>
+
+  <!-- Open Wisdom Book Surface at Base -->
+  <path d="M 120 380 Q 256 360 256 405 Q 256 360 392 380 L 392 410 Q 256 390 256 435 Q 256 390 120 410 Z" fill="#203d2e" stroke="#34d399" stroke-width="3"/>
+
+  <!-- Sprout of Gentle Growth emerging from the Book -->
+  <path d="M 256 400 C 256 360 256 320 256 295" stroke="url(#sageGrad)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 256 330 C 225 315 200 335 210 355 C 225 370 250 350 256 330 Z" fill="url(#sageGrad)" filter="url(#softGlow)"/>
+  <path d="M 256 305 C 285 290 310 310 300 330 C 285 345 260 325 256 305 Z" fill="url(#sageGrad)" filter="url(#softGlow)"/>
+  <circle cx="256" cy="290" r="6" fill="#a7f3d0"/>
+
+  <!-- Dopamine Sparkles -->
+  <circle cx="140" cy="140" r="4" fill="#fef08a" opacity="0.8"/>
+  <circle cx="390" cy="130" r="4" fill="#6ee7b7" opacity="0.85"/>
+  <circle cx="256" cy="80" r="3" fill="#fef08a" opacity="0.7"/>
+</svg>

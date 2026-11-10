@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DEMO — ADHD Student Planner | Low-Stimulation Academic OS</title>
+  <meta name="description" content="Sensory-friendly, guilt-free student planner designed for ADHD executive function. 100% private, offline-first PWA.">
+  <meta name="theme-color" content="#2d5a44">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+  
+  <!-- Demo Guard & Banner CSS -->
+  <link rel="stylesheet" href="demo-banner.css">
+  <script src="demo-guard.js"></script>
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="../css/app.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/theme.css">
+</head>
+<body data-theme="sage-calm">
+
+  <div class="app-container">
+    <!-- Header with Brand & Maya Persona -->
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <div class="brand-icon-leaf">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">ADHD Student Planner</h1>
+          <div class="brand-subtitle">Maya’s Sanctuary • Public Interactive Demo</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <span id="badge-grace-tokens" class="badge-streak">🛡️ 3 Grace</span>
+        <span id="badge-study-streak" class="badge-streak">🔥 4d Streak</span>
+        <button id="btn-toggle-fog" class="btn-fog-toggle" aria-label="Toggle Low-Spoons Fog Mode">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          </svg>
+          Fog Mode
+        </button>
+      </div>
+    </header>
+
+    <!-- Floating Focus Sprint HUD (Hidden by default) -->
+    <div id="hud-sprint-timer" class="sprint-hud" style="display: none;">
+      <div>
+        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.85;">Active Focus Sprint</div>
+        <div id="sprint-digits" class="sprint-digits">20:00</div>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button id="btn-pause-sprint" class="btn btn-sm btn-secondary" style="background: rgba(255,255,255,0.2); color: white; border: none;">Pause</button>
+        <button id="btn-stop-sprint" class="btn btn-sm btn-secondary" style="background: rgba(255,255,255,0.2); color: white; border: none;">Stop</button>
+      </div>
+    </div>
+
+    <!-- MAIN APP SCREENS -->
+
+    <!-- Screen 1: Dashboard -->
+    <main id="screen-dashboard" class="app-screen active">
+      <!-- Single Focus Hero Card -->
+      <section id="card-focus-hero" class="card-focus-hero">
+        <!-- Rendered dynamically by app.js -->
+      </section>
+
+      <!-- Quick Semester Telemetry Bento -->
+      <div class="grid-2col mb-lg">
+        <div class="card" style="display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Overall Projected GPA</div>
+            <div id="display-overall-gpa" style="font-size: 1.8rem; font-weight: 800; color: var(--color-primary); margin-top: 4px;">4.00</div>
+          </div>
+          <button class="btn btn-sm btn-secondary" data-open-modal="modal-add-assignment">+ New Task</button>
+        </div>
+
+        <div class="card" style="display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Grace Shield Status</div>
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-secondary); margin-top: 4px;">Streak Guilt-Free Protected</div>
+          </div>
+          <button id="btn-restart-tour" class="btn btn-sm btn-secondary">Maya’s Guide</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Screen 2: Assignments -->
+    <section id="screen-assignments" class="app-screen">
+      <div class="flex-between mb-md">
+        <div>
+          <h2 style="font-size: 1.35rem; font-weight: 800;">Academic Deliverables</h2>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">De-chunked tasks with clear urgency horizons.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" data-open-modal="modal-add-assignment">+ Add Assignment</button>
+      </div>
+
+      <div id="list-assignments">
+        <!-- Populated dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Screen 3: Courses -->
+    <section id="screen-courses" class="app-screen">
+      <div class="flex-between mb-md">
+        <div>
+          <h2 style="font-size: 1.35rem; font-weight: 800;">Enrolled Courses</h2>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">Automated weighted grade calculations and course contacts.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" data-open-modal="modal-add-course">+ Add Course</button>
+      </div>
+
+      <div id="grid-courses" class="grid-2col">
+        <!-- Populated dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Screen 4: Exams -->
+    <section id="screen-exams" class="app-screen">
+      <div class="flex-between mb-md">
+        <div>
+          <h2 style="font-size: 1.35rem; font-weight: 800;">Exam Radar & Countdowns</h2>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">Countdowns and preparation checklists for midterms & finals.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" data-open-modal="modal-add-exam">+ Add Exam</button>
+      </div>
+
+      <div id="list-exams">
+        <!-- Populated dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Screen 5: Settings & Sovereignty -->
+    <section id="screen-settings" class="app-screen">
+      <div class="mb-md">
+        <h2 style="font-size: 1.35rem; font-weight: 800;">Settings & Data Sovereignty</h2>
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">100% client-side privacy. Your study notes never leave this device.</p>
+      </div>
+
+      <div class="card mb-md">
+        <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 12px;">Sensory Theme Palette</h3>
+        <div class="form-group">
+          <label class="form-label" for="select-theme">Select Color Palette</label>
+          <select id="select-theme" class="form-select">
+            <option value="sage-calm">Sage Calm (Light Organic Canvas)</option>
+            <option value="oled-dark">OLED Dark (High Contrast Dark)</option>
+            <option value="warm-earth">Warm Earth (Terracotta & Sand)</option>
+            <option value="high-contrast">High Contrast (Sensory Focused)</option>
+          </select>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 12px;">
+          <input type="checkbox" id="chk-sound-enabled" checked style="width: 18px; height: 18px;">
+          <label for="chk-sound-enabled" style="font-size: 0.88rem; font-weight: 600;">Play gentle audio bell upon milestone completion</label>
+        </div>
+      </div>
+
+      <div class="card mb-md">
+        <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 8px;">Guilt-Free Study Stats</h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+          Academic burnout happens. Grace Shields automatically protect your streak when life gets intense.
+        </p>
+        <div style="display: flex; gap: 20px; font-size: 0.9rem;">
+          <div><span style="color: var(--text-muted);">Current Streak:</span> <strong id="stats-streak-display">4 Days Active</strong></div>
+          <div><span style="color: var(--text-muted);">Grace Tokens:</span> <strong id="stats-grace-display">3 Shields Remaining</strong></div>
+        </div>
+      </div>
+
+      <div class="card mb-md">
+        <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 8px;">Data Sovereignty & Backups</h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">
+          No cloud sync, no tracking, zero recurring subscription fees. Export your entire academic database anytime.
+        </p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button id="btn-export-json" class="btn btn-secondary">💾 Export JSON Backup</button>
+          <label class="btn btn-secondary" style="cursor: pointer;">
+            📥 Restore Backup
+            <input type="file" id="input-import-file" accept=".json" style="display: none;">
+          </label>
+          <button id="btn-reset-data" class="btn btn-secondary" style="color: var(--color-danger);">Reset to Fresh Semester</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- RESPONSIVE BOTTOM NAVIGATION (RULE-05 Compliant: 5 icons) -->
+  <nav class="bottom-nav">
+    <div class="nav-inner">
+      <button class="nav-tab active" data-tab="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Today
+      </button>
+      <button class="nav-tab" data-tab="assignments">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        Tasks
+      </button>
+      <button class="nav-tab" data-tab="courses">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Courses
+      </button>
+      <button class="nav-tab" data-tab="exams">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Exams
+      </button>
+      <button class="nav-tab" data-tab="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Settings
+      </button>
+    </div>
+  </nav>
+
+  <!-- MODAL: ADD ASSIGNMENT -->
+  <div id="modal-add-assignment" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="title-modal-asg">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="title-modal-asg" class="modal-title">New Academic Deliverable</h3>
+        <button class="modal-close" data-close-modal="modal-add-assignment" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="form-add-assignment">
+        <div class="form-group">
+          <label class="form-label" for="input-asg-title">Assignment Title</label>
+          <input type="text" id="input-asg-title" class="form-input" placeholder="e.g. Chapter 4 Chemistry Synthesis" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="select-asg-course">Course</label>
+          <select id="select-asg-course" class="form-select" required></select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="select-asg-category">Category</label>
+          <select id="select-asg-category" class="form-select">
+            <option value="assignments">Paper / Essay / Report</option>
+            <option value="quizzes">Quiz / Problem Set</option>
+            <option value="midterm">Midterm Exam Preparation</option>
+            <option value="final">Final Project / Capstone</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-asg-date">Due Date</label>
+          <input type="date" id="input-asg-date" class="form-input" required>
+        </div>
+
+        <div class="form-group" style="display: flex; gap: 8px; align-items: center;">
+          <input type="checkbox" id="chk-asg-essential" style="width: 18px; height: 18px;">
+          <label for="chk-asg-essential" style="font-size: 0.85rem; font-weight: 600;">Mark as Essential (Visible in Fog Mode)</label>
+        </div>
+
+        <div class="form-group" style="display: flex; gap: 8px; align-items: center; background: var(--bg-surface-soft); padding: 10px; border-radius: var(--radius-sm);">
+          <input type="checkbox" id="chk-asg-dechunk" checked style="width: 18px; height: 18px;">
+          <label for="chk-asg-dechunk" style="font-size: 0.85rem; font-weight: 600; color: var(--color-primary);">🪄 Automatically de-chunk into 4 bite-sized milestones</label>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
+          <button type="button" class="btn btn-secondary" data-close-modal="modal-add-assignment">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Deliverable</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD COURSE -->
+  <div id="modal-add-course" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="title-modal-course">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="title-modal-course" class="modal-title">Add Enrolled Course</h3>
+        <button class="modal-close" data-close-modal="modal-add-course" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="form-add-course">
+        <div class="form-group">
+          <label class="form-label" for="input-course-code">Course Code</label>
+          <input type="text" id="input-course-code" class="form-input" placeholder="e.g. CHEM 102" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-course-name">Course Name</label>
+          <input type="text" id="input-course-name" class="form-input" placeholder="e.g. Organic Chemistry I" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-course-instructor">Instructor / Professor</label>
+          <input type="text" id="input-course-instructor" class="form-input" placeholder="e.g. Dr. H. Morgan">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-course-schedule">Class Schedule</label>
+          <input type="text" id="input-course-schedule" class="form-input" placeholder="e.g. Tue/Thu 11:00 AM">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-course-target">Target Percentage (%)</label>
+          <input type="number" id="input-course-target" class="form-input" value="90" min="0" max="100">
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
+          <button type="button" class="btn btn-secondary" data-close-modal="modal-add-course">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD EXAM -->
+  <div id="modal-add-exam" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="title-modal-exam">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="title-modal-exam" class="modal-title">Schedule Exam or Midterm</h3>
+        <button class="modal-close" data-close-modal="modal-add-exam" aria-label="Close dialog">&times;</button>
+      </div>
+      <form id="form-add-exam">
+        <div class="form-group">
+          <label class="form-label" for="select-exam-course">Course</label>
+          <select id="select-exam-course" class="form-select" required></select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-exam-title">Exam Title</label>
+          <input type="text" id="input-exam-title" class="form-input" placeholder="e.g. Midterm 1: Chapters 1-4" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-exam-date">Exam Date</label>
+          <input type="date" id="input-exam-date" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-exam-time">Exam Time</label>
+          <input type="text" id="input-exam-time" class="form-input" placeholder="e.g. 10:00 AM - 11:30 AM">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-exam-location">Exam Location / Room</label>
+          <input type="text" id="input-exam-location" class="form-input" placeholder="e.g. Hall B / Online">
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
+          <button type="button" class="btn btn-secondary" data-close-modal="modal-add-exam">Cancel</button>
+          <button type="submit" class="btn btn-primary">Schedule Exam</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ONBOARDING TOUR OVERLAY & CARD (RULE-01, RULE-02) -->
+  <div id="tutorial-overlay" class="tutorial-overlay"></div>
+  <div id="tutorial-card" class="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+    <div class="tutorial-header">
+      <div class="tutorial-persona">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm0 18a8 8 0 118-8 8 8 0 01-8 8z"/>
+        </svg>
+        Maya • Sage Calm Guide
+      </div>
+      <div id="tutorial-step-count" class="tutorial-step-indicator">Step 1 of 5</div>
+    </div>
+    <h4 id="tutorial-title" class="tutorial-title">Welcome to Your Sanctuary</h4>
+    <p id="tutorial-message" class="tutorial-message">Maya’s supportive dialogue goes here.</p>
+    <div id="tutorial-hint" class="tutorial-hint">Action Hint</div>
+    <div class="tutorial-footer">
+      <button id="tutorial-btn-skip" class="btn btn-sm btn-secondary" style="border: none; background: transparent; color: var(--text-muted);">Skip Tour</button>
+      <div style="display: flex; gap: 8px;">
+        <button id="tutorial-btn-prev" class="btn btn-sm btn-secondary">← Back</button>
+        <button id="tutorial-btn-next" class="btn btn-sm btn-primary">Next Step →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic Scripts -->
+  <script src="../js/engine.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/tutorials.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>

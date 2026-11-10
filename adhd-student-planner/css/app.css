@@ -1,0 +1,301 @@
+/**
+ * ADHD Student Planner — Base CSS & Layout
+ * Aesthetic: Sage Calm Studio (Edition 1: Base - Calm Minimalist)
+ * Follows Rule-04 (Brand DNA) and Rule-05 (Mobile Resilience < 400px)
+ */
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Sage Calm Master Brand Tokens (Shop 1) */
+  --bg-primary: #f4f7f5;
+  --bg-surface: #ffffff;
+  --bg-surface-soft: #edf3ee;
+  --bg-surface-elevated: #ffffff;
+  --border-subtle: #e2ece5;
+  --border-strong: #c8ded0;
+
+  --color-primary: #2d5a44;
+  --color-primary-light: #3d755a;
+  --color-primary-soft: #e7f2ec;
+  --color-accent: #d97706;
+  --color-accent-soft: #fef3c7;
+  
+  --color-success: #15803d;
+  --color-success-soft: #dcfce7;
+  --color-danger: #b91c1c;
+  --color-danger-soft: #fee2e2;
+  --color-info: #0284c7;
+  --color-info-soft: #e0f2fe;
+
+  --text-primary: #192a20;
+  --text-secondary: #4a6353;
+  --text-muted: #738c7c;
+  --text-inverse: #ffffff;
+
+  --shadow-sm: 0 1px 3px rgba(35, 55, 43, 0.06);
+  --shadow-md: 0 4px 12px rgba(35, 55, 43, 0.08);
+  --shadow-lg: 0 10px 25px rgba(35, 55, 43, 0.12);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+/* App Shell Container */
+.app-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 16px 16px 120px 16px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header & Brand Identity */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0 20px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 20px;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brand-icon-leaf {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.brand-text {
+  min-width: 0;
+}
+
+.brand-title {
+  font-size: clamp(1.15rem, 3.5vw, 1.45rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brand-subtitle {
+  font-size: clamp(0.75rem, 2.2vw, 0.85rem);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Fog Mode & Streak Badges in Header */
+.badge-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-accent-soft);
+  color: #92400e;
+  border: 1px solid #fde68a;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.btn-fog-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-fog-toggle:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-fog-toggle.active {
+  background: var(--color-primary);
+  color: var(--text-inverse);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px rgba(45, 90, 68, 0.35);
+}
+
+/* Responsive Navigation Bar (RULE-05 Compliant: 3x2 on mobile, single row on desktop) */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border-subtle);
+  padding: 8px 12px;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-inner {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  max-width: 640px;
+  gap: 6px;
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  min-width: 0;
+}
+
+.nav-tab svg {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 3px;
+  stroke-width: 2;
+  transition: transform var(--transition-fast);
+}
+
+.nav-tab:hover {
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.nav-tab.active {
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.nav-tab.active svg {
+  transform: translateY(-2px);
+}
+
+/* Responsive breakpoint for small phones (< 400px) */
+@media (max-width: 440px) {
+  .app-container {
+    padding: 12px 12px 140px 12px;
+  }
+  .nav-inner {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+  }
+  .nav-tab {
+    padding: 6px 2px;
+    font-size: 0.65rem;
+  }
+  .nav-tab svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Screen Sections */
+.app-screen {
+  display: none;
+  animation: fadeIn 200ms ease-out forwards;
+}
+
+.app-screen.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Grid Layouts & Utility */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .grid-2col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.mt-sm { margin-top: 8px; }
+.mt-md { margin-top: 16px; }
+.mt-lg { margin-top: 24px; }
+.mb-sm { margin-bottom: 8px; }
+.mb-md { margin-bottom: 16px; }
+.mb-lg { margin-bottom: 24px; }

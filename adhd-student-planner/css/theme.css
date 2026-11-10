@@ -1,0 +1,76 @@
+/**
+ * ADHD Student Planner — Theme Palettes
+ * 4 Sensory-Friendly Palettes (Sage Calm, OLED Dark, Warm Earth, High Contrast)
+ */
+
+/* Theme 1: Sage Calm (Default) */
+body[data-theme="sage-calm"] {
+  --bg-primary: #f4f7f5;
+  --bg-surface: #ffffff;
+  --bg-surface-soft: #edf3ee;
+  --border-subtle: #e2ece5;
+  --border-strong: #c8ded0;
+  --color-primary: #2d5a44;
+  --color-primary-light: #3d755a;
+  --color-primary-soft: #e7f2ec;
+  --color-accent: #d97706;
+  --color-accent-soft: #fef3c7;
+  --text-primary: #192a20;
+  --text-secondary: #4a6353;
+  --text-muted: #738c7c;
+  --text-inverse: #ffffff;
+}
+
+/* Theme 2: OLED Dark */
+body[data-theme="oled-dark"] {
+  --bg-primary: #0a110d;
+  --bg-surface: #121c16;
+  --bg-surface-soft: #18261e;
+  --border-subtle: #1e3328;
+  --border-strong: #2d4c3c;
+  --color-primary: #4ade80;
+  --color-primary-light: #86efac;
+  --color-primary-soft: #143522;
+  --color-accent: #f59e0b;
+  --color-accent-soft: #382405;
+  --text-primary: #e6f4ec;
+  --text-secondary: #9fc4af;
+  --text-muted: #668874;
+  --text-inverse: #0a110d;
+}
+
+/* Theme 3: Warm Earth / Terracotta */
+body[data-theme="warm-earth"] {
+  --bg-primary: #fbf7f4;
+  --bg-surface: #ffffff;
+  --bg-surface-soft: #f5ece4;
+  --border-subtle: #ebe0d6;
+  --border-strong: #d8c4b2;
+  --color-primary: #8c4a2f;
+  --color-primary-light: #a65b3d;
+  --color-primary-soft: #faece6;
+  --color-accent: #d97706;
+  --color-accent-soft: #fef3c7;
+  --text-primary: #2e1a12;
+  --text-secondary: #634335;
+  --text-muted: #8c6e60;
+  --text-inverse: #ffffff;
+}
+
+/* Theme 4: High Contrast */
+body[data-theme="high-contrast"] {
+  --bg-primary: #ffffff;
+  --bg-surface: #ffffff;
+  --bg-surface-soft: #f0f0f0;
+  --border-subtle: #767676;
+  --border-strong: #000000;
+  --color-primary: #004d40;
+  --color-primary-light: #00695c;
+  --color-primary-soft: #e0f2f1;
+  --color-accent: #b45309;
+  --color-accent-soft: #fef3c7;
+  --text-primary: #000000;
+  --text-secondary: #222222;
+  --text-muted: #444444;
+  --text-inverse: #ffffff;
+}
