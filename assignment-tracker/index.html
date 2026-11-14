@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment Tracker — Calm Deadline Radar for ADHD Students</title>
+  <meta name="description" content="A calm, guilt-free assignment tracker for ADHD students. Start-By dates, micro-steps, focus sprints and a Rescue Mode. 100% private, offline-first PWA.">
+  <meta name="theme-color" content="#2d5a44">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/theme.css">
+</head>
+<body data-theme="sage-calm">
+
+  <div class="app-container">
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">Assignment Tracker</h1>
+          <div class="brand-subtitle">Maya's Study Nook · Sage Calm Studio</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span id="badge-streak" class="badge-pill" title="Days in a row with a finished assignment">0-day streak</span>
+        <button id="btn-toggle-fog" class="btn btn-sm btn-ghost" type="button" aria-pressed="false">Fog Mode</button>
+      </div>
+    </header>
+
+    <!-- Floating focus sprint HUD -->
+    <div id="hud-sprint" class="sprint-hud" style="display:none;" role="status" aria-live="polite">
+      <div class="sprint-info">
+        <div class="sprint-label">Focus sprint · <span id="sprint-title"></span></div>
+        <div id="sprint-digits" class="sprint-digits">15:00</div>
+        <div class="sprint-track"><div id="sprint-bar" class="sprint-bar"></div></div>
+      </div>
+      <div class="sprint-actions">
+        <button id="btn-pause-sprint" class="btn btn-sm btn-hud" type="button">Pause</button>
+        <button id="btn-stop-sprint" class="btn btn-sm btn-hud" type="button">Finish</button>
+      </div>
+    </div>
+
+    <!-- Screen: Today -->
+    <main id="screen-today" class="app-screen active">
+      <section id="hero-next" class="card hero-card" aria-label="Do this next"></section>
+
+      <section id="rescue-nudge" class="nudge fog-hide" style="display:none;"></section>
+
+      <section class="card quick-add fog-hide" aria-label="Quick add an assignment">
+        <div class="card-title">Quick add <span class="muted">· takes 10 seconds</span></div>
+        <input id="qa-title" class="input" type="text" maxlength="120" placeholder="What's the assignment?" autocomplete="off">
+        <div class="chip-label">Due</div>
+        <div id="qa-due" class="chip-row" role="group" aria-label="Due date">
+          <button type="button" class="chip" data-due="today">Today</button>
+          <button type="button" class="chip selected" data-due="tomorrow">Tomorrow</button>
+          <button type="button" class="chip" data-due="friday">Friday</button>
+          <button type="button" class="chip" data-due="nextweek">Next week</button>
+        </div>
+        <div class="chip-label">How long might it take?</div>
+        <div id="qa-est" class="chip-row" role="group" aria-label="Estimated time">
+          <button type="button" class="chip" data-est="30">30m</button>
+          <button type="button" class="chip selected" data-est="60">1h</button>
+          <button type="button" class="chip" data-est="120">2h</button>
+          <button type="button" class="chip" data-est="240">4h</button>
+        </div>
+        <div class="row-actions">
+          <button id="btn-qa-add" class="btn btn-primary" type="button">Add it</button>
+          <button class="btn btn-ghost" type="button" data-open-modal="modal-add-assignment">More options</button>
+        </div>
+      </section>
+
+      <section class="card fog-hide" aria-label="Coming up">
+        <div class="card-title">Coming up next</div>
+        <div id="upcoming-list" class="list"></div>
+      </section>
+
+      <section class="stat-grid fog-hide" aria-label="Quick stats">
+        <div class="stat"><div id="stat-open" class="stat-num">0</div><div class="stat-label">Open</div></div>
+        <div class="stat"><div id="stat-week" class="stat-num">0</div><div class="stat-label">Due this week</div></div>
+        <div class="stat"><div id="stat-done" class="stat-num">0</div><div class="stat-label">Finished</div></div>
+      </section>
+    </main>
+
+    <!-- Screen: Tasks -->
+    <section id="screen-tasks" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>All Assignments</h2>
+          <p class="muted">Sorted by when you should start, not just when it's due.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" data-open-modal="modal-add-assignment">+ Add</button>
+      </div>
+      <div id="task-filter" class="chip-row" role="group" aria-label="Filter">
+        <button type="button" class="chip selected" data-filter="open">Open</button>
+        <button type="button" class="chip" data-filter="done">Finished</button>
+      </div>
+      <div id="task-list"></div>
+    </section>
+
+    <!-- Screen: Courses -->
+    <section id="screen-courses" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Courses</h2>
+          <p class="muted">Tag assignments by class so you can see the whole picture.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="inline-form">
+          <input id="course-name" class="input" type="text" maxlength="60" placeholder="e.g. Biology 101" autocomplete="off">
+          <button id="btn-add-course" class="btn btn-primary" type="button">Add</button>
+        </div>
+      </div>
+      <div id="course-list"></div>
+    </section>
+
+    <!-- Screen: Rescue -->
+    <section id="screen-rescue" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Rescue Mode</h2>
+          <p class="muted">Behind? That's okay. Pick one calm move for each item. No guilt, no red numbers.</p>
+        </div>
+      </div>
+      <div id="rescue-list"></div>
+    </section>
+
+    <!-- Screen: Settings -->
+    <section id="screen-settings" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Settings</h2>
+          <p class="muted">Everything stays on this device.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Look &amp; feel</div>
+        <div id="theme-picker" class="chip-row"></div>
+        <label class="switch-row"><span>Sound cues</span><input id="set-sound" type="checkbox"></label>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Your study capacity</div>
+        <label class="field">
+          <span>Realistic minutes of study per day</span>
+          <input id="set-capacity" class="input" type="number" min="15" max="720" step="15" inputmode="numeric">
+        </label>
+        <label class="switch-row"><span>Skip weekends when planning Start-By dates</span><input id="set-weekends" type="checkbox"></label>
+        <p id="fudge-note" class="muted"></p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Backup &amp; guide</div>
+        <div class="row-actions wrap">
+          <button id="btn-export-json" class="btn btn-secondary" type="button">Export backup</button>
+          <button id="btn-import-json" class="btn btn-secondary" type="button">Import backup</button>
+          <button id="btn-restart-tour" class="btn btn-ghost" type="button">Replay Maya's tour</button>
+        </div>
+        <input id="file-import" type="file" accept="application/json,.json" style="display:none;">
+        <div class="row-actions wrap">
+          <button id="btn-reset-data" class="btn btn-danger-soft" type="button">Erase all data</button>
+        </div>
+      </div>
+    </section>
+
+    <nav id="bottom-nav" class="bottom-nav" aria-label="Main">
+      <button class="nav-btn active" type="button" data-tab="today"><span class="nav-ico">◎</span><span>Today</span></button>
+      <button class="nav-btn" type="button" data-tab="tasks"><span class="nav-ico">☰</span><span>Tasks</span></button>
+      <button class="nav-btn" type="button" data-tab="courses"><span class="nav-ico">▤</span><span>Courses</span></button>
+      <button class="nav-btn" type="button" data-tab="rescue"><span class="nav-ico">♡</span><span>Rescue</span></button>
+      <button class="nav-btn" type="button" data-tab="settings"><span class="nav-ico">⚙</span><span>Settings</span></button>
+    </nav>
+  </div>
+
+  <!-- Modal: Add assignment -->
+  <div id="modal-add-assignment" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="add-title-h">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="add-title-h">New assignment</h3>
+        <button class="btn-x" type="button" data-close-modal="modal-add-assignment" aria-label="Close">×</button>
+      </div>
+      <label class="field"><span>Title</span><input id="add-title" class="input" type="text" maxlength="120" autocomplete="off"></label>
+      <div class="grid-2">
+        <label class="field"><span>Due date</span><input id="add-due" class="input" type="date"></label>
+        <label class="field"><span>Estimated minutes</span><input id="add-est" class="input" type="number" min="0" max="6000" step="5" value="60" inputmode="numeric"></label>
+      </div>
+      <div class="grid-2">
+        <label class="field"><span>Course</span><select id="add-course" class="input"></select></label>
+        <label class="field"><span>Worth (% of grade)</span><input id="add-weight" class="input" type="number" min="0" max="100" value="10" inputmode="numeric"></label>
+      </div>
+      <label class="field"><span>Split into small steps?</span><select id="add-template" class="input"></select></label>
+      <p id="add-error" class="form-error" role="alert"></p>
+      <div class="row-actions">
+        <button id="btn-save-assignment" class="btn btn-primary" type="button">Save assignment</button>
+        <button class="btn btn-ghost" type="button" data-close-modal="modal-add-assignment">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Assignment details -->
+  <div id="modal-assignment-detail" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title-h">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="detail-title-h">Assignment</h3>
+        <button class="btn-x" type="button" data-close-modal="modal-assignment-detail" aria-label="Close">×</button>
+      </div>
+      <div id="detail-body"></div>
+      <div class="row-actions">
+        <button class="btn btn-ghost" type="button" data-close-modal="modal-assignment-detail">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Confirm -->
+  <div id="modal-confirm" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-h">
+    <div class="modal-card small">
+      <div class="modal-head">
+        <h3 id="confirm-h">Are you sure?</h3>
+        <button class="btn-x" type="button" data-close-modal="modal-confirm" aria-label="Close">×</button>
+      </div>
+      <p id="confirm-text" class="muted"></p>
+      <div class="row-actions">
+        <button id="btn-confirm-yes" class="btn btn-danger-soft" type="button">Yes, do it</button>
+        <button class="btn btn-ghost" type="button" data-close-modal="modal-confirm">Keep things as they are</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Guided tour (never blocks clicks: dimming is a spotlight shadow, the overlay ignores pointer events) -->
+  <div id="tutorial-overlay" class="tutorial-overlay" style="display:none;">
+    <div id="tutorial-card" class="tutorial-card" style="display:none;" role="dialog" aria-live="polite" aria-labelledby="tutorial-title">
+      <div class="tour-head">
+        <div class="tour-avatar" aria-hidden="true">M</div>
+        <div>
+          <div id="tutorial-section-tag" class="tour-tag"></div>
+          <div id="tutorial-title" class="tour-title"></div>
+        </div>
+        <div id="tutorial-step-count" class="tour-count"></div>
+      </div>
+      <p id="tutorial-message" class="tour-msg"></p>
+      <p id="tutorial-hint" class="tour-hint"></p>
+      <div class="tour-actions">
+        <button id="tutorial-btn-skip" class="btn btn-ghost btn-sm" type="button">Skip tour</button>
+        <span class="spacer"></span>
+        <button id="tutorial-btn-prev" class="btn btn-secondary btn-sm" type="button">Back</button>
+        <button id="tutorial-btn-next" class="btn btn-primary btn-sm" type="button">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/engine.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/tutorials.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "Assignment Tracker — Calm Deadline Radar",
+  "short_name": "Assignments",
+  "description": "A calm, guilt-free assignment tracker for ADHD students with Start-By dates, micro-steps, focus sprints and Rescue Mode.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7f5",
+  "theme_color": "#2d5a44",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
