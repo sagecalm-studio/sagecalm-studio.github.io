@@ -1,0 +1,22 @@
+/* Homework Planner — Edition 1 selectable palettes (body[data-theme]) */
+body[data-theme="sage-calm"] { /* default tokens in app.css */ }
+
+body[data-theme="lavender-mist"] {
+  --bg: #f6f4fa; --surface: #ffffff; --surface-2: #ece8f4; --border: #dcd5ea;
+  --text: #2a2438; --text-2: #50476a; --text-muted: #746b8c;
+  --primary: #5b4b8a; --primary-hover: #4a3c75; --primary-soft: #e6e0f3;
+  --accent: #b5527a; --accent-soft: #f8e6ee;
+}
+body[data-theme="warm-sand"] {
+  --bg: #faf6ef; --surface: #ffffff; --surface-2: #f1e9da; --border: #e4d8c3;
+  --text: #33291d; --text-2: #5e4f3a; --text-muted: #85755e;
+  --primary: #8a5a2b; --primary-hover: #744a22; --primary-soft: #f3e4cf;
+  --accent: #3f7d70; --accent-soft: #dff0ec;
+}
+body[data-theme="high-contrast"] {
+  --bg: #ffffff; --surface: #ffffff; --surface-2: #f0f0f0; --border: #767676;
+  --text: #000000; --text-2: #1a1a1a; --text-muted: #3d3d3d;
+  --primary: #004d40; --primary-hover: #00382e; --primary-soft: #e0f2f1;
+  --accent: #8a3a00; --accent-soft: #ffe9d6; --danger: #8b1a1a; --danger-soft: #fde4e4;
+}
+body[data-theme="high-contrast"] .card, body[data-theme="high-contrast"] .row, body[data-theme="high-contrast"] .chip { border-width: 2px; }

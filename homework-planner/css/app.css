@@ -1,0 +1,93 @@
+/* Homework Planner — Edition 1 base layout & tokens (Sage Calm) */
+:root {
+  --bg: #f4f7f5;
+  --surface: #ffffff;
+  --surface-2: #eaf1ed;
+  --border: #d5e0da;
+  --text: #1f2d26;
+  --text-2: #4a5e54;
+  --text-muted: #6b7f74;
+  --primary: #2d5a44;
+  --primary-hover: #234a37;
+  --primary-soft: #dcebe2;
+  --on-primary: #ffffff;
+  --accent: #b86b2e;
+  --accent-soft: #fbeedd;
+  --ok: #3f7d58;
+  --warn: #b7791f;
+  --danger: #b4493f;
+  --danger-soft: #fbe9e7;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 2px 10px rgba(31, 45, 38, 0.07);
+  --nav-h: 68px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  font-size: 16px;
+  min-height: 100vh;
+}
+button { font-family: inherit; font-size: inherit; cursor: pointer; }
+input, select { font-family: inherit; font-size: 1rem; color: var(--text); }
+h1, h2, h3 { line-height: 1.25; }
+.muted { color: var(--text-muted); font-weight: 400; }
+.spacer { flex: 1; }
+
+.app-container { max-width: 720px; margin: 0 auto; padding: 0 16px calc(var(--nav-h) + 28px); min-height: 100vh; }
+
+.app-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 14px 0 12px; position: sticky; top: 0; z-index: 30; background: var(--bg);
+}
+.brand-wrapper { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.brand-mark {
+  width: 38px; height: 38px; border-radius: 12px; background: var(--primary); color: var(--on-primary);
+  display: grid; place-items: center; flex: 0 0 auto;
+}
+.brand-text { min-width: 0; }
+.brand-title { font-size: clamp(1rem, 3.6vw, 1.15rem); font-weight: 800; letter-spacing: -0.01em; }
+.brand-subtitle { font-size: 0.74rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.header-actions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+
+.app-screen { display: none; animation: fadeIn 0.18s ease; }
+.app-screen.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.screen-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin: 6px 0 14px; }
+.screen-head h2 { font-size: clamp(1.2rem, 4vw, 1.4rem); font-weight: 800; }
+.screen-head p { font-size: 0.88rem; margin-top: 2px; }
+
+/* Bottom navigation: 5 items in a row; below 400px it becomes a 3 x 2 grid (Gate G-05) */
+.bottom-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px;
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  max-width: 720px; margin: 0 auto;
+}
+.nav-btn {
+  background: none; border: 0; border-radius: 12px; padding: 7px 2px;
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  font-size: 0.72rem; font-weight: 600; color: var(--text-muted); min-width: 0;
+}
+.nav-btn span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav-ico { font-size: 1.15rem; line-height: 1.2; }
+.nav-btn.active { background: var(--primary-soft); color: var(--primary); }
+
+@media (max-width: 399px) {
+  :root { --nav-h: 112px; }
+  .app-container { padding-left: 12px; padding-right: 12px; }
+  .bottom-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .brand-subtitle { display: none; }
+  .grid-2 { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (min-width: 721px) {
+  .bottom-nav { border-radius: 18px 18px 0 0; border: 1px solid var(--border); border-bottom: 0; }
+}
