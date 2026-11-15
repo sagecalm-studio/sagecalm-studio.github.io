@@ -105,7 +105,7 @@
 
   // ---------- Core homework math ----------
   function isOpen(a) {
-    return a.status === 'todo' || a.status === 'doing';
+    return !!(a && (a.status === 'todo' || a.status === 'doing'));
   }
 
   function sprintMinutes(assignmentId, sprints) {
@@ -122,13 +122,14 @@
 
   // actualMin = manual adjustment + sprint minutes (single source of truth)
   function actualMinutes(a, sprints) {
+    if (!a) return 0;
     return Math.max(0, Math.round(Number(a.manualMin) || 0)) + sprintMinutes(a.id, sprints);
   }
 
   // Personal "fudge factor": avg(actual/est) of last 10 completed, clamped 1.0..3.0. <3 samples => 1.25.
   function fudgeFactor(assignments, sprints) {
     var done = (assignments || []).filter(function (a) {
-      return a.status === 'done' && a.estMin > 0 && actualMinutes(a, sprints) > 0;
+      return a && a.status === 'done' && a.estMin > 0 && actualMinutes(a, sprints) > 0;
     });
     if (done.length < 3) return 1.25;
     done.sort(function (x, y) { return String(y.completedAt || '').localeCompare(String(x.completedAt || '')); });
@@ -152,6 +153,7 @@
   }
 
   function remainingMinutes(a, sprints) {
+    if (!a) return 0;
     return Math.max(0, (a.estMin || 0) - actualMinutes(a, sprints));
   }
 
@@ -179,6 +181,7 @@
   }
 
   function weightOf(a) {
+    if (!a) return 0;
     var w = Number(a.weight);
     if (!isFinite(w)) return 0;
     return Math.min(100, Math.max(0, w));
@@ -224,14 +227,14 @@
 
   // ---------- Homework Micro-Steps & Templates ----------
   function stepProgress(a) {
-    var steps = a.steps || [];
+    var steps = (a && a.steps) || [];
     if (!steps.length) return 0;
-    var done = steps.filter(function (s) { return s.done; }).length;
+    var done = steps.filter(function (s) { return s && s.done; }).length;
     return Math.round((done / steps.length) * 100);
   }
   function nextStepOf(a) {
-    var steps = a.steps || [];
-    for (var i = 0; i < steps.length; i++) if (!steps[i].done) return steps[i];
+    var steps = (a && a.steps) || [];
+    for (var i = 0; i < steps.length; i++) if (steps[i] && !steps[i].done) return steps[i];
     return null;
   }
 

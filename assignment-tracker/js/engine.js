@@ -75,7 +75,9 @@
 
   // ---------- Formatting ----------
   function fmtMin(m) {
-    m = Math.max(0, Math.round(Number(m) || 0));
+    var num = Number(m);
+    if (!isFinite(num) || isNaN(num) || num <= 0) return '0m';
+    m = Math.max(0, Math.round(num));
     if (m < 60) return m + 'm';
     var h = Math.floor(m / 60);
     var r = m % 60;
@@ -133,7 +135,10 @@
   function neededWorkDays(remainingMin, fudge, capacityMin) {
     if (!(capacityMin > 0)) return 1;
     if (!(remainingMin > 0)) return 1;
-    return Math.max(1, Math.ceil((remainingMin * fudge) / capacityMin));
+    var f = Number(fudge);
+    if (!isFinite(f) || f <= 0) f = 1;
+    var res = Math.ceil((remainingMin * f) / capacityMin);
+    return (isFinite(res) && res >= 1) ? res : 1;
   }
 
   function remainingMinutes(a, sprints) {
