@@ -148,8 +148,21 @@
         els.sectionTag.textContent = `📍 ${step.sectionName}`;
       }
       els.title.textContent = step.title;
-      els.message.textContent = step.message;
-      els.hint.textContent = step.actionHint;
+
+      if (currentStep === 0) {
+        const hasHeroTask = targetEl && !targetEl.textContent.includes('All assignments completed') && !targetEl.textContent.includes('No pending assignments');
+        if (!hasHeroTask) {
+          els.message.textContent = 'Syllabus paralysis is real. When you have active schoolwork, this Focus Card isolates your single next step with zero sensory overwhelm.';
+          els.hint.textContent = 'Tap "+ Add Assignment" anytime to de-chunk your workload.';
+        } else {
+          els.message.textContent = step.message;
+          els.hint.textContent = step.actionHint;
+        }
+      } else {
+        els.message.textContent = step.message;
+        els.hint.textContent = step.actionHint;
+      }
+
       els.stepCount.textContent = `Step ${currentStep + 1} of ${TOUR_STEPS.length}`;
 
       // Update buttons

@@ -472,11 +472,30 @@
     if (!hero.hasTask) {
       container.innerHTML = `
         <div class="hero-tagline">✨ Daily Sanctuary</div>
-        <div class="hero-task-title">${hero.message}</div>
-        <p style="color: var(--text-secondary); font-size: 0.9rem;">
-          Your cognitive spoons are preserved. Recharge, drink water, or review your courses at your own pace.
+        <div class="hero-task-title" style="margin-top: 6px; font-size: 1.15rem; font-weight: 700; color: var(--color-primary);">${hero.message}</div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 6px; line-height: 1.4;">
+          Your cognitive spoons are preserved. Add your next assignment or reload sample data to test workflows.
         </p>
+        <div style="display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;">
+          <button class="btn btn-sm btn-primary" id="btn-hero-add-asg">+ Add Assignment</button>
+          <button class="btn btn-sm btn-secondary" id="btn-hero-view-asgs">View Assignments</button>
+          <button class="btn btn-sm btn-secondary" id="btn-hero-restore-demo" style="font-size: 0.75rem; color: var(--text-secondary);">↺ Reload Sample Tasks</button>
+        </div>
       `;
+
+      const btnAdd = container.querySelector('#btn-hero-add-asg');
+      if (btnAdd) btnAdd.addEventListener('click', () => openModal('modal-add-assignment'));
+
+      const btnView = container.querySelector('#btn-hero-view-asgs');
+      if (btnView) btnView.addEventListener('click', () => switchTab('assignments'));
+
+      const btnRestore = container.querySelector('#btn-hero-restore-demo');
+      if (btnRestore) {
+        btnRestore.addEventListener('click', () => {
+          state = window.StudentStorage.reset();
+          renderAll();
+        });
+      }
       return;
     }
 
@@ -598,6 +617,9 @@
       asg.completed = true;
       asg.completedDate = getTodayISO();
       playGentleBell('sprint');
+    } else {
+      asg.completed = false;
+      asg.completedDate = null;
     }
 
     window.StudentStorage.save(state);
@@ -608,12 +630,14 @@
   function markAssignmentComplete(asgId) {
     const asg = state.assignments.find(a => a.id === asgId);
     if (!asg) return;
-    asg.completed = true;
-    asg.completedDate = getTodayISO();
+    asg.completed = !asg.completed;
+    asg.completedDate = asg.completed ? getTodayISO() : null;
     if (asg.dechunkedMilestones) {
-      asg.dechunkedMilestones.forEach(m => { m.done = true; });
+      asg.dechunkedMilestones.forEach(m => { m.done = asg.completed; });
     }
-    playGentleBell('sprint');
+    if (asg.completed) {
+      playGentleBell('sprint');
+    }
     window.StudentStorage.save(state);
     renderAll();
   }
@@ -647,8 +671,21 @@
           <p style="color: var(--text-secondary); font-size: 0.88rem;">
             ${state.settings.fogMode ? 'Fog Mode is active: all non-urgent assignments are hidden.' : 'No assignments found in this view.'}
           </p>
+          <div style="margin-top: 16px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-sm btn-primary" id="btn-asg-empty-add">+ Add Assignment</button>
+            <button class="btn btn-sm btn-secondary" id="btn-asg-empty-reload">↺ Reload Sample Tasks</button>
+          </div>
         </div>
       `;
+      const btnAdd = container.querySelector('#btn-asg-empty-add');
+      if (btnAdd) btnAdd.addEventListener('click', () => openModal('modal-add-assignment'));
+      const btnReload = container.querySelector('#btn-asg-empty-reload');
+      if (btnReload) {
+        btnReload.addEventListener('click', () => {
+          state = window.StudentStorage.reset();
+          renderAll();
+        });
+      }
       return;
     }
 
