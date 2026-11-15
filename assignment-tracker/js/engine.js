@@ -36,6 +36,7 @@
     return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (day < 10 ? '0' : '') + day;
   }
   function daysBetween(a, b) {
+    if (!isValidDate(a) || !isValidDate(b)) return 0;
     return Math.round((toUTC(b) - toUTC(a)) / DAY_MS);
   }
   function addDays(s, n) {
@@ -97,7 +98,7 @@
 
   // ---------- Core assignment math ----------
   function isOpen(a) {
-    return a.status === 'todo' || a.status === 'doing';
+    return !!(a && (a.status === 'todo' || a.status === 'doing'));
   }
 
   function sprintMinutes(assignmentId, sprints) {
@@ -114,6 +115,7 @@
 
   // actualMin = manual adjustment + sprint minutes (single source of truth)
   function actualMinutes(a, sprints) {
+    if (!a) return 0;
     return Math.max(0, Math.round(Number(a.manualMin) || 0)) + sprintMinutes(a.id, sprints);
   }
 
@@ -214,7 +216,8 @@
 
   // ---------- Steps ----------
   function stepProgress(a) {
-    var steps = a.steps || [];
+    if (!a) return 0;
+    var steps = Array.isArray(a.steps) ? a.steps : [];
     if (!steps.length) return 0;
     var done = steps.filter(function (s) { return s.done; }).length;
     return Math.round((done / steps.length) * 100);
@@ -255,10 +258,11 @@
 
   // ---------- Capacity heatmap ----------
   function levelOf(ratio) {
-    if (ratio <= 0) return 'none';
-    if (ratio < 0.5) return 'light';
-    if (ratio <= 1) return 'ok';
-    if (ratio <= 1.5) return 'heavy';
+    var r = Number(ratio);
+    if (!isFinite(r) || r <= 0) return 'none';
+    if (r < 0.5) return 'light';
+    if (r <= 1) return 'ok';
+    if (r <= 1.5) return 'heavy';
     return 'over';
   }
 
