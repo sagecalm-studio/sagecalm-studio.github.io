@@ -37,6 +37,7 @@
     return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (day < 10 ? '0' : '') + day;
   }
   function daysBetween(a, b) {
+    if (!isValidDate(a) || !isValidDate(b)) return 0;
     return Math.round((toUTC(b) - toUTC(a)) / DAY_MS);
   }
   function addDays(s, n) {
@@ -82,10 +83,12 @@
 
   // ---------- Formatting ----------
   function fmtMin(m) {
-    m = Math.max(0, Math.round(Number(m) || 0));
-    if (m < 60) return m + 'm';
-    var h = Math.floor(m / 60);
-    var r = m % 60;
+    var n = Number(m);
+    if (!isFinite(n) || n <= 0) return '0m';
+    var rounded = Math.round(n);
+    if (rounded < 60) return rounded + 'm';
+    var h = Math.floor(rounded / 60);
+    var r = rounded % 60;
     return r === 0 ? h + 'h' : h + 'h ' + r + 'm';
   }
   function escapeHtml(str) {
@@ -138,9 +141,14 @@
   }
 
   function neededWorkDays(remainingMin, fudge, capacityMin) {
-    if (!(capacityMin > 0)) return 1;
-    if (!(remainingMin > 0)) return 1;
-    return Math.max(1, Math.ceil((remainingMin * fudge) / capacityMin));
+    var c = Number(capacityMin);
+    var r = Number(remainingMin);
+    var f = Number(fudge);
+    if (!isFinite(c) || c <= 0) return 1;
+    if (!isFinite(r) || r <= 0) return 1;
+    if (!isFinite(f) || f <= 0) f = 1.25;
+    var d = Math.ceil((r * f) / c);
+    return isFinite(d) ? Math.min(365, Math.max(1, d)) : 1;
   }
 
   function remainingMinutes(a, sprints) {
@@ -298,10 +306,11 @@
 
   // ---------- Evening Capacity Heatmap ----------
   function levelOf(ratio) {
-    if (ratio <= 0) return 'none';
-    if (ratio < 0.5) return 'light';
-    if (ratio <= 1) return 'ok';
-    if (ratio <= 1.5) return 'heavy';
+    var r = Number(ratio);
+    if (!isFinite(r) || r <= 0) return 'none';
+    if (r < 0.5) return 'light';
+    if (r <= 1) return 'ok';
+    if (r <= 1.5) return 'heavy';
     return 'over';
   }
 
