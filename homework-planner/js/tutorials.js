@@ -45,7 +45,7 @@
   function positionCard(target, card) {
     var vh = window.innerHeight;
     var vw = window.innerWidth;
-    var nav = el('bottom-nav');
+    var nav = el('bottom-nav') || document.querySelector('.zen-island-nav');
     var navH = 0;
     if (nav) {
       var nr = nav.getBoundingClientRect();
