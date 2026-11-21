@@ -477,6 +477,10 @@
   pointer-events: auto;
 }
 
+body.tutorial-active {
+  padding-bottom: 45vh !important;
+}
+
 body.tutorial-active .app-container,
 body.tutorial-active .app-header,
 body.tutorial-active .bottom-nav {
@@ -497,13 +501,13 @@ body.tutorial-active .tutorial-target-active {
 
 .tutorial-beacon {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  width: 14px;
-  height: 14px;
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--gold);
-  box-shadow: 0 0 0 6px rgba(217, 119, 6, 0.28);
+  box-shadow: 0 0 0 5px rgba(217, 119, 6, 0.28);
   pointer-events: none;
 }
 
@@ -513,10 +517,10 @@ body.tutorial-active .tutorial-target-active {
   left: 50%;
   transform: translateX(-50%);
   bottom: 24px;
-  width: min(92vw, 460px);
+  width: min(94vw, 460px);
   max-height: calc(100vh - 120px);
   overflow-y: auto;
-  z-index: 10001 !important;
+  z-index: 10020 !important;
   pointer-events: auto !important;
   background: var(--surface);
   color: var(--text-main);
@@ -588,10 +592,54 @@ body.tutorial-active .tutorial-target-active {
   flex: 1;
 }
 
-@media (max-width: 640px) {
-  .hero-meta-grid,
+@media (max-width: 700px) {
+  body.tutorial-active .bottom-nav,
+  body.tutorial-active .app-header:not(:has(.tutorial-target-active)) {
+    display: none !important;
+  }
+  .hero-amount {
+    font-size: clamp(1.5rem, 5.5vw, 2rem);
+    margin-bottom: 2px;
+  }
+  .hero-sub {
+    font-size: 0.78rem;
+    margin-bottom: 8px;
+  }
+  .hero-meta-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 7px 9px;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .meta-label {
+    font-size: 0.65rem;
+  }
+  .meta-val {
+    font-size: 0.8rem;
+  }
+  .next-move-box {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  #tutorial-card,
+  .tutorial-card {
+    padding: 12px 14px;
+    gap: 6px;
+    border-radius: 16px;
+  }
+  .tour-title {
+    font-size: 0.86rem;
+  }
+  .tour-msg {
+    font-size: 0.78rem;
+    line-height: 1.36;
+  }
+  .tour-hint {
+    font-size: 0.72rem;
+  }
   .split-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
   .weather-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));

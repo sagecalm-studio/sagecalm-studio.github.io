@@ -16,9 +16,9 @@
       filter: none !important;
     }
   </style>
-  <link rel="stylesheet" href="css/theme.css?v=1.0.2">
-  <link rel="stylesheet" href="css/app.css?v=1.0.2">
-  <link rel="stylesheet" href="css/components.css?v=1.0.2">
+  <link rel="stylesheet" href="css/theme.css?v=1.0.3">
+  <link rel="stylesheet" href="css/app.css?v=1.0.3">
+  <link rel="stylesheet" href="css/components.css?v=1.0.3">
 </head>
 <body data-theme="sage-calm" data-active-tab="pulse">
 
@@ -407,15 +407,15 @@
     if ('caches' in window) {
       caches.keys().then(function (keys) {
         keys.forEach(function (k) {
-          if (k.indexOf('adhd-finance-planner-v1') !== -1) caches.delete(k);
+          if (k !== 'adhd-finance-planner-v3') caches.delete(k);
         });
       }).catch(function () {});
     }
   </script>
-  <script src="js/engine.js?v=1.0.2"></script>
-  <script src="js/storage.js?v=1.0.2"></script>
-  <script src="js/config.js?v=1.0.2"></script>
-  <script src="js/tutorials.js?v=1.0.2"></script>
-  <script src="js/app.js?v=1.0.2"></script>
+  <script src="js/engine.js?v=1.0.3"></script>
+  <script src="js/storage.js?v=1.0.3"></script>
+  <script src="js/config.js?v=1.0.3"></script>
+  <script src="js/tutorials.js?v=1.0.3"></script>
+  <script src="js/app.js?v=1.0.3"></script>
 </body>
 </html>

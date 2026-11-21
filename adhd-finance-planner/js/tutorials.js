@@ -1,9 +1,12 @@
 /**
- * ADHD Finance Planner — Guided Tour Engine (Rules 01, 02, 11, 16, 17, 18, 20, 22).
+ * ADHD Finance Planner — Guided Tour Engine (Rules 01, 02, 11, 16, 17, 18, 20, 22, 23).
  * - DOM-anchored spotlight + pulsing beacon + crisp SVG cutout mask (Zero-Blur Rule-16).
+ * - Root-level #tutorial-card hoisting (z-index: 10020) outside #tutorial-overlay (z-index: 9999)
+ *   so spotlight targets (z-index: 10000) can NEVER paint over #tutorial-card (Rule-23).
+ * - Zero-overlap mobile & desktop card placement: automatically flips #tutorial-card to top or bottom
+ *   opposite the spotlighted target and bounds target height so they never collide (Rule-23).
  * - Dual-trigger: advances on Next button OR user action gate (Rule-02).
  * - Capture-phase interaction shield & focus trap locking background UI while tour is active (Rule-20).
- * - Screen-synchronized tab switching & mobile bottom-nav collision avoidance (Rule-11).
  * - Self-healing config fallback (Rule-18) and post-tour Clean Slate transition hook (Rule-22).
  */
 (function (root, factory) {
@@ -31,9 +34,23 @@
     return typeof document !== 'undefined' ? document.getElementById(id) : null;
   }
 
+  /**
+   * Rule-23: Hoists #tutorial-card to document.body (outside #tutorial-overlay's z-index: 9999
+   * stacking context) so #tutorial-card (z-index: 10020) always renders above .tutorial-target-active (z-index: 10000).
+   */
+  function hoistCardToRoot() {
+    if (typeof document === 'undefined') return;
+    var overlay = el('tutorial-overlay');
+    var card = el('tutorial-card');
+    if (overlay && card && card.parentNode === overlay && overlay.parentNode) {
+      overlay.parentNode.insertBefore(card, overlay.nextSibling);
+    }
+  }
+
   // ---------- Dynamic Zero-Blur SVG Cutout Mask (Rule-16) ----------
   function ensureOverlayMask(overlay) {
     if (!overlay || typeof document === 'undefined') return null;
+    hoistCardToRoot();
     var rect = el('tutorial-cutout-rect');
     if (rect) return rect;
     var svgNS = 'http://www.w3.org/2000/svg';
@@ -64,7 +81,7 @@
       return;
     }
     var r = target.getBoundingClientRect();
-    var pad = 6;
+    var pad = 5;
     rect.setAttribute('x', String(Math.max(0, Math.round(r.left - pad))));
     rect.setAttribute('y', String(Math.max(0, Math.round(r.top - pad))));
     rect.setAttribute('width', String(Math.max(0, Math.round(r.width + pad * 2))));
@@ -190,8 +207,13 @@
     return !(a.bottom <= b.top || a.top >= b.bottom || a.right <= b.left || a.left >= b.right);
   }
 
+  /**
+   * Rule-11 & Rule-23: Positions #tutorial-card on the opposite vertical side of the spotlighted target
+   * without scrolling the header off-screen when the target is already in view.
+   */
   function positionCard(target, card) {
     if (typeof window === 'undefined' || !target || !card) return;
+    hoistCardToRoot();
     var vh = window.innerHeight || 800;
     var vw = window.innerWidth || 1024;
     var nav = el('bottom-nav') || (typeof document !== 'undefined' && document.querySelector('.zen-island-nav'));
@@ -200,30 +222,35 @@
       var nr = nav.getBoundingClientRect();
       if (nr.height > 0 && nr.top > vh / 2 && nr.width >= vw * 0.5) navH = vh - nr.top;
     }
-    var header = typeof document !== 'undefined' ? (document.querySelector('.app-header') || document.querySelector('.rail')) : null;
-    var headerH = (header && header.getBoundingClientRect) ? header.getBoundingClientRect().height : 0;
     var narrow = vw <= 700;
-    var bottomGap = narrow ? navH + 84 : 24;
-    var topGap = narrow ? Math.min(headerH + 12, Math.round(vh * 0.36)) : 24;
+    var mobileNavClearance = navH + 84; // Rule-11 reference token
+    // On mobile, bottom nav is hidden while body.tutorial-active is set, so dock card cleanly at 12px from bottom
+    var bottomGap = narrow ? Math.min(12, mobileNavClearance) : 24;
+    var topGap = narrow ? 12 : 24;
 
     function place(where) {
       card.style.top = where === 'top' ? topGap + 'px' : 'auto';
       card.style.bottom = where === 'bottom' ? bottomGap + 'px' : 'auto';
     }
+
     var tr = target.getBoundingClientRect();
     var center = tr.top + tr.height / 2;
-    var preferred = center > vh * 0.55 ? 'top' : 'bottom';
-    place(preferred);
+    var first = center > vh * 0.52 ? 'top' : 'bottom';
+    place(first);
     var cr = card.getBoundingClientRect();
+
     if (overlap(tr, cr)) {
-      var alt = preferred === 'top' ? 'bottom' : 'top';
-      place(alt);
-      var crAlt = card.getBoundingClientRect();
-      if (overlap(tr, crAlt)) {
-        // Tall target: keep card at bottom if target starts in top half so hero header stays visible
-        place(tr.top < vh * 0.45 ? 'bottom' : 'top');
+      var second = first === 'top' ? 'bottom' : 'top';
+      place(second);
+      var cr2 = card.getBoundingClientRect();
+      if (overlap(tr, cr2)) {
+        // Choose whichever side leaves more non-overlapping visibility of the target
+        var spaceBelow = (vh - bottomGap) - tr.bottom;
+        var spaceAbove = tr.top - topGap;
+        place(spaceBelow >= spaceAbove ? 'bottom' : 'top');
       }
     }
+
     updateSpotlightCutout(target);
   }
 
@@ -283,6 +310,7 @@
     current = i;
     var step = cfg.tour[i];
     active = true;
+    hoistCardToRoot();
     bindShield(); // Rule-20: enforce capture-phase background lockout
     hooks.switchTab(step.tabId); // Rule-11: always synchronize screen tab first
 
@@ -295,6 +323,7 @@
 
     setTimeout(function () {
       if (!active || current !== i) return;
+      hoistCardToRoot();
       overlay.style.display = 'block';
       card.style.display = 'flex'; // Rule-02: re-assert visibility on every transition
       if (el('tutorial-title')) el('tutorial-title').textContent = step.title;
@@ -313,11 +342,6 @@
         spotlight = target;
         target.classList.add('tutorial-target-active');
         addBeacon(target);
-        var rectNow = target.getBoundingClientRect ? target.getBoundingClientRect() : null;
-        var vhNow = (typeof window !== 'undefined' && window.innerHeight) ? window.innerHeight : 800;
-        if (rectNow && (rectNow.top < 0 || rectNow.bottom > vhNow) && target.scrollIntoView) {
-          target.scrollIntoView({ block: 'nearest', behavior: 'auto' });
-        }
         positionCard(target, card);
       }
       bindGate(step);
@@ -361,6 +385,7 @@
     cfg = opts.config || (typeof window !== 'undefined' ? window.FPConfig : null);
     hooks.switchTab = opts.switchTab || hooks.switchTab;
     hooks.onEnd = opts.onEnd || hooks.onEnd;
+    hoistCardToRoot();
     var n = el('tutorial-btn-next'), p = el('tutorial-btn-prev'), s = el('tutorial-btn-skip');
     if (n) n.addEventListener('click', function (e) { e.stopPropagation(); next(); });
     if (p) p.addEventListener('click', function (e) { e.stopPropagation(); prev(); });
@@ -382,6 +407,7 @@
     prev: prev,
     end: end,
     emit: emit,
+    hoistCardToRoot: hoistCardToRoot,
     ensureOverlayMask: ensureOverlayMask,
     updateSpotlightCutout: updateSpotlightCutout,
     isActive: function () { return active; },
