@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEMO — ADHD Finance Planner | Sage Calm Edition</title>
+  <meta name="description" content="Interactive live demo of ADHD Finance Planner: Safe Dopamine Wallet, 1-Tap Paycheck Autopilot Splitter, ADHD Tax Subscription Radar, Sinking Buckets &amp; Net Worth Runway.">
+  <meta name="theme-color" content="#2d5a44">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+  <style id="zero-blur-lockout">
+    #tutorial-overlay, .tutorial-overlay {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      filter: none !important;
+    }
+  </style>
+  <link rel="stylesheet" href="demo-banner.css">
+  <script src="demo-guard.js"></script>
+  <link rel="stylesheet" href="../css/theme.css?v=1.0.2">
+  <link rel="stylesheet" href="../css/app.css?v=1.0.2">
+  <link rel="stylesheet" href="../css/components.css?v=1.0.2">
+</head>
+<body data-theme="sage-calm" data-active-tab="pulse">
+
+  <div class="app-container">
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">ADHD Finance Planner</h1>
+          <div class="brand-subtitle">Maya's Money Sanctuary · Live Interactive Demo</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span id="badge-tax-saved" class="badge-pill" title="Annual ADHD Tax saved by cancelling drains">$0.00/yr saved</span>
+        <button id="btn-launch-tour" class="btn btn-sm btn-secondary" type="button">Maya's Guide</button>
+        <button id="btn-toggle-fog" class="btn btn-sm btn-ghost" type="button" aria-pressed="false">Fog Mode</button>
+      </div>
+    </header>
+
+    <!-- Screen 1: Pulse -->
+    <main id="screen-pulse" class="app-screen active">
+      <section id="hero-pulse" class="card hero-card" aria-label="Safe Dopamine Wallet"></section>
+
+      <section class="card fog-hide" aria-label="5-second spend log">
+        <div class="card-title">
+          <span>Quick Dopamine Spend Log</span>
+          <span class="muted">· takes 5 seconds</span>
+        </div>
+        <div class="inline-form">
+          <input id="qa-spend-title" class="input" type="text" maxlength="120" placeholder="e.g. Iced Matcha, Grocery run, Takeout" autocomplete="off">
+          <input id="qa-spend-amount" class="input" type="number" min="0.01" max="100000" step="0.01" value="6.50" style="max-width:125px;" aria-label="Spend amount in dollars">
+          <button id="btn-qa-spend" class="btn btn-primary" type="button">Log spend</button>
+        </div>
+        <div class="chip-label">1-Tap Amount Presets</div>
+        <div id="qa-amount-chips" class="chip-row" role="group" aria-label="Quick amount presets">
+          <button type="button" class="chip selected" data-cents="650" data-label="Coffee / Drink">$6.50 Coffee</button>
+          <button type="button" class="chip" data-cents="1450" data-label="Quick Meal">$14.50 Meal</button>
+          <button type="button" class="chip" data-cents="3500" data-label="Groceries / Essentials">$35.00 Essentials</button>
+          <button type="button" class="chip" data-cents="2000" data-label="Dopamine Treat">$20.00 Treat</button>
+        </div>
+      </section>
+
+      <section class="card fog-hide" aria-label="14-day cashflow weather">
+        <div class="card-title">
+          <span>14-Day Cashflow Weather</span>
+          <span id="weather-status-tag" class="tag ok">Steady Runway</span>
+        </div>
+        <div id="weather-ribbon" class="weather-grid"></div>
+      </section>
+
+      <section class="card fog-hide" aria-label="Upcoming bills and recent activity">
+        <div class="card-title">
+          <span>Upcoming Bills Before Payday</span>
+          <button class="btn btn-secondary btn-sm" type="button" data-open-modal="modal-add-bill">+ Add Bill</button>
+        </div>
+        <div id="pulse-bills-list" class="list"></div>
+      </section>
+
+      <section class="card fog-hide" aria-label="Recent spending activity">
+        <div class="card-title">Recent Dopamine &amp; Cash Activity</div>
+        <div id="recent-tx-list" class="list"></div>
+      </section>
+
+      <section class="stat-grid fog-hide" aria-label="Quick financial metrics">
+        <div class="stat"><div id="stat-checking" class="stat-num">$0.00</div><div class="stat-label">In Checking</div></div>
+        <div class="stat"><div id="stat-promised" class="stat-num">$0.00</div><div class="stat-label">Reserved for Bills</div></div>
+        <div class="stat"><div id="stat-runway" class="stat-num">0 days</div><div class="stat-label">Safety Runway</div></div>
+      </section>
+    </main>
+
+    <!-- Screen 2: Autopilot -->
+    <section id="screen-autopilot" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Payday Autopilot Splitter</h2>
+          <p class="muted">Stop payday paralysis. Split any paycheck into 4 guilt-free buckets in one tap.</p>
+        </div>
+      </div>
+
+      <div id="autopilot-card" class="card">
+        <div class="card-title">1. Enter Incoming Paycheck or Freelance Deposit</div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Deposit Label</span>
+            <input id="pay-label" class="input" type="text" maxlength="80" value="Bi-Weekly Paycheck" autocomplete="off">
+          </label>
+          <label class="field">
+            <span>Net Paycheck Amount ($)</span>
+            <input id="pay-amount" class="input" type="number" min="1" max="1000000" step="0.01" value="2400.00">
+          </label>
+        </div>
+        <div class="chip-label">Choose Your ADHD Autopilot Split Rule</div>
+        <div id="pay-preset-chips" class="chip-row" role="group" aria-label="Paycheck split presets">
+          <button type="button" class="chip selected" data-preset="balanced">Calm 50 / 20 / 10 / 20</button>
+          <button type="button" class="chip" data-preset="catchup">Bill Catch-Up 60 / 15 / 15 / 10</button>
+          <button type="button" class="chip" data-preset="freelance">Freelance Tax Shield 45 / 25 / 15 / 15</button>
+          <button type="button" class="chip" data-preset="gentle">High-Spoons 50 / 15 / 10 / 25</button>
+        </div>
+
+        <div id="autopilot-preview" class="split-grid"></div>
+
+        <div class="row-actions">
+          <button id="btn-run-autopilot" class="btn btn-primary" type="button">Apply Paycheck Split</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Recent Paycheck Allocations</div>
+        <div id="paycheck-history-list" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Screen 3: Radar -->
+    <section id="screen-radar" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>ADHD Tax &amp; Subscription Radar</h2>
+          <p class="muted">Catch free trials before they bill and turn cancelled drains into an annual trophy.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" data-open-modal="modal-add-sub">+ Track Sub / Trial</button>
+      </div>
+
+      <div id="radar-trophy-card" class="card"></div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Active Subscriptions &amp; Free Trials</span>
+          <div id="radar-filter" class="chip-row" role="group" aria-label="Subscription filter">
+            <button type="button" class="chip selected" data-sub-filter="active">Active &amp; Trials</button>
+            <button type="button" class="chip" data-sub-filter="cancelled">Cancelled Trophy Vault</button>
+          </div>
+        </div>
+        <div id="subs-list" class="list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Shame-Free Catch-Up Triage</div>
+        <p class="muted" style="margin-bottom:10px;">Trials expiring or bills past due? Pick one calm move per item:</p>
+        <div id="triage-list" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Screen 4: Buckets -->
+    <section id="screen-buckets" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Sinking Fund Buckets</h2>
+          <p class="muted">Turn surprise annual renewals, car repairs, and holidays into calm monthly cushions.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" data-open-modal="modal-add-bucket">+ New Bucket</button>
+      </div>
+
+      <div id="buckets-card" class="card">
+        <div id="buckets-list" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Screen 5: Wealth -->
+    <section id="screen-wealth" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Accounts &amp; Net Worth Runway</h2>
+          <p class="muted">100% offline balance sheet. Update your checking snapshot anytime without double-counting.</p>
+        </div>
+      </div>
+
+      <div id="wealth-summary-card" class="card"></div>
+
+      <div class="card">
+        <div class="card-title">Quick Checking Balance Sync (Anti-Double-Counting)</div>
+        <p class="muted" style="margin-bottom:10px;">Sync your real checking balance anytime. Earlier logged spends today are never subtracted twice.</p>
+        <div class="inline-form">
+          <input id="sync-balance-input" class="input" type="number" step="0.01" placeholder="Current checking balance ($)">
+          <button id="btn-sync-balance" class="btn btn-primary" type="button">Sync Checking</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">All Cash Accounts &amp; Liabilities</div>
+        <div id="accounts-list" class="list"></div>
+        <div class="inline-form" style="margin-top:12px;">
+          <input id="new-acct-name" class="input" type="text" maxlength="60" placeholder="Account name (e.g. High-Yield Savings)">
+          <select id="new-acct-type" class="input" style="max-width:155px;" aria-label="Account type">
+            <option value="checking">Checking</option>
+            <option value="savings">Savings / Buffer</option>
+            <option value="debt">Credit Card / Debt</option>
+          </select>
+          <input id="new-acct-bal" class="input" type="number" step="0.01" value="0" style="max-width:120px;" aria-label="Starting balance">
+          <button id="btn-add-account" class="btn btn-secondary" type="button">Add Account</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 6: Settings -->
+    <section id="screen-settings" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Sanctuary Settings</h2>
+          <p class="muted">100% of your financial data lives privately in your browser on this device.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Calm Neurodivergent Themes</div>
+        <div id="theme-picker" class="chip-row"></div>
+        <label class="switch-row">
+          <span>Gentle completion sound chimes</span>
+          <input id="set-sound" type="checkbox" checked>
+        </label>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Payday &amp; Survival Floor Calibration</div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Next Payday Date</span>
+            <input id="set-next-payday" class="input" type="date">
+          </label>
+          <label class="field">
+            <span>Bare-Bones Monthly Survival Floor ($)</span>
+            <input id="set-survival" class="input" type="number" min="100" max="100000" step="50" value="2200">
+          </label>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Zero-Guilt "Oops Buffer" Cushion ($)</span>
+            <input id="set-oops" class="input" type="number" min="0" max="10000" step="5" value="50">
+          </label>
+          <label class="field">
+            <span>Currency Symbol</span>
+            <select id="set-currency" class="input">
+              <option value="USD">USD ($)</option>
+              <option value="CAD">CAD (CA$)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="AUD">AUD (A$)</option>
+            </select>
+          </label>
+        </div>
+        <button id="btn-save-settings" class="btn btn-primary btn-sm" type="button">Save Calibration</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Clean Slate, Sample Data &amp; Backups</div>
+        <p class="muted" style="margin-bottom:10px;">Start fresh on a clean empty slate anytime, or load sample data to explore features.</p>
+        <div class="row-actions">
+          <button id="btn-clean-slate" class="btn btn-secondary" type="button">🧹 Start Clean Slate</button>
+          <button id="btn-load-sample" class="btn btn-secondary" type="button">🌱 Load Sample Data</button>
+          <button id="btn-restart-tour" class="btn btn-ghost" type="button">Replay Maya's Tour</button>
+        </div>
+        <div class="row-actions" style="margin-top:10px;">
+          <button id="btn-export-json" class="btn btn-secondary" type="button">Export JSON Backup</button>
+          <button id="btn-import-json" class="btn btn-secondary" type="button">Import JSON Backup</button>
+          <input id="file-import" type="file" accept="application/json,.json" style="display:none;">
+          <button id="btn-reset-data" class="btn btn-danger-soft" type="button">Erase All Data</button>
+        </div>
+      </div>
+    </section>
+
+    <nav id="bottom-nav" class="bottom-nav" aria-label="Main Navigation">
+      <button class="nav-btn active" type="button" data-tab="pulse"><span class="nav-ico">◎</span><span>Pulse</span></button>
+      <button class="nav-btn" type="button" data-tab="autopilot"><span class="nav-ico">⚡</span><span>Autopilot</span></button>
+      <button class="nav-btn" type="button" data-tab="radar"><span class="nav-ico">🛡</span><span>Tax Radar</span></button>
+      <button class="nav-btn" type="button" data-tab="buckets"><span class="nav-ico">⛁</span><span>Buckets</span></button>
+      <button class="nav-btn" type="button" data-tab="wealth"><span class="nav-ico">◈</span><span>Net Worth</span></button>
+      <button class="nav-btn" type="button" data-tab="settings"><span class="nav-ico">⚙</span><span>Settings</span></button>
+    </nav>
+  </div>
+
+  <!-- Modal 1: Add Bill -->
+  <div id="modal-add-bill" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="add-bill-h">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="add-bill-h">Add Recurring or Upcoming Bill</h3>
+        <button class="btn-x" type="button" data-close-modal="modal-add-bill" aria-label="Close">×</button>
+      </div>
+      <label class="field"><span>Bill Title</span><input id="bill-title" class="input" type="text" maxlength="120" placeholder="e.g. Apartment Rent, Electric Bill"></label>
+      <div class="grid-2">
+        <label class="field"><span>Amount ($)</span><input id="bill-amount" class="input" type="number" min="0.01" step="0.01" value="85.00"></label>
+        <label class="field"><span>Due Date</span><input id="bill-due" class="input" type="date"></label>
+      </div>
+      <label class="switch-row"><span>Shift weekend due dates to Friday early</span><input id="bill-weekend" type="checkbox" checked></label>
+      <p id="bill-error" class="form-error" role="alert"></p>
+      <div class="row-actions">
+        <button id="btn-save-bill" class="btn btn-primary" type="button">Save Bill</button>
+        <button class="btn btn-ghost" type="button" data-close-modal="modal-add-bill">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add Subscription / Free Trial -->
+  <div id="modal-add-sub" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="add-sub-h">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="add-sub-h">Track Subscription or Free Trial</h3>
+        <button class="btn-x" type="button" data-close-modal="modal-add-sub" aria-label="Close">×</button>
+      </div>
+      <label class="field"><span>Service Name</span><input id="sub-name" class="input" type="text" maxlength="120" placeholder="e.g. Adobe Creative Cloud, Gym, App Trial"></label>
+      <div class="grid-2">
+        <label class="field"><span>Cost ($)</span><input id="sub-amount" class="input" type="number" min="0.01" step="0.01" value="14.99"></label>
+        <label class="field"><span>Billing Cycle</span><select id="sub-cycle" class="input">
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+          <option value="quarterly">Quarterly</option>
+          <option value="weekly">Weekly</option>
+        </select></label>
+      </div>
+      <div class="grid-2">
+        <label class="field"><span>Next Renewal / Trial Expiry</span><input id="sub-next-date" class="input" type="date"></label>
+        <label class="field"><span>Cancel-By Alert Lead (Days)</span><input id="sub-lead-days" class="input" type="number" min="1" max="30" value="3"></label>
+      </div>
+      <label class="switch-row"><span>This is a Free Trial (High Alert!)</span><input id="sub-is-trial" type="checkbox"></label>
+      <p id="sub-error" class="form-error" role="alert"></p>
+      <div class="row-actions">
+        <button id="btn-save-sub" class="btn btn-primary" type="button">Track Subscription</button>
+        <button class="btn btn-ghost" type="button" data-close-modal="modal-add-sub">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Add Sinking Bucket -->
+  <div id="modal-add-bucket" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="add-bucket-h">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="add-bucket-h">Create Sinking Fund Bucket</h3>
+        <button class="btn-x" type="button" data-close-modal="modal-add-bucket" aria-label="Close">×</button>
+      </div>
+      <label class="field"><span>Bucket Name</span><input id="bucket-name" class="input" type="text" maxlength="80" placeholder="e.g. Car Maintenance, Vet Emergency, Holidays"></label>
+      <div class="grid-2">
+        <label class="field"><span>Target Goal ($)</span><input id="bucket-target" class="input" type="number" min="1" step="1" value="600"></label>
+        <label class="field"><span>Already Saved ($)</span><input id="bucket-saved" class="input" type="number" min="0" step="1" value="100"></label>
+      </div>
+      <label class="field"><span>Payperiod Reserve Hold ($)</span><input id="bucket-hold" class="input" type="number" min="0" step="1" value="50"></label>
+      <label class="switch-row"><span>Protect this hold from daily Dopamine Wallet</span><input id="bucket-autohold" type="checkbox" checked></label>
+      <p id="bucket-error" class="form-error" role="alert"></p>
+      <div class="row-actions">
+        <button id="btn-save-bucket" class="btn btn-primary" type="button">Create Bucket</button>
+        <button class="btn btn-ghost" type="button" data-close-modal="modal-add-bucket">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Confirm Dialog -->
+  <div id="modal-confirm" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-h">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="confirm-h">Are you sure?</h3>
+        <button class="btn-x" type="button" data-close-modal="modal-confirm" aria-label="Close">×</button>
+      </div>
+      <p id="confirm-text" class="muted" style="margin-bottom:14px;"></p>
+      <div class="row-actions">
+        <button id="btn-confirm-yes" class="btn btn-danger-soft" type="button">Yes, proceed</button>
+        <button class="btn btn-ghost" type="button" data-close-modal="modal-confirm">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="tutorial-overlay" class="tutorial-overlay" style="display:none;">
+    <div id="tutorial-card" class="tutorial-card" style="display:none;" role="dialog" aria-live="polite" aria-labelledby="tutorial-title">
+      <div class="tour-head">
+        <div class="tour-avatar" aria-hidden="true">M</div>
+        <div>
+          <div id="tutorial-section-tag" class="tour-tag"></div>
+          <div id="tutorial-title" class="tour-title"></div>
+        </div>
+        <div id="tutorial-step-count" class="tour-count"></div>
+      </div>
+      <p id="tutorial-message" class="tour-msg"></p>
+      <p id="tutorial-hint" class="tour-hint"></p>
+      <div class="tour-actions">
+        <button id="tutorial-btn-skip" class="btn btn-ghost btn-sm" type="button">Skip tour</button>
+        <span class="spacer"></span>
+        <button id="tutorial-btn-prev" class="btn btn-secondary btn-sm" type="button">Back</button>
+        <button id="tutorial-btn-next" class="btn btn-primary btn-sm" type="button">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if ('caches' in window) {
+      caches.keys().then(function (keys) {
+        keys.forEach(function (k) {
+          if (k.indexOf('adhd-finance-planner-v1') !== -1) caches.delete(k);
+        });
+      }).catch(function () {});
+    }
+  </script>
+  <script src="../js/engine.js?v=1.0.2"></script>
+  <script src="../js/storage.js?v=1.0.2"></script>
+  <script src="../js/config.js?v=1.0.2"></script>
+  <script src="../js/tutorials.js?v=1.0.2"></script>
+  <script src="../js/app.js?v=1.0.2"></script>
+</body>
+</html>
