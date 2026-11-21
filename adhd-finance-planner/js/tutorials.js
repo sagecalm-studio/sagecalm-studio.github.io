@@ -212,15 +212,16 @@
     }
     var tr = target.getBoundingClientRect();
     var center = tr.top + tr.height / 2;
-    var first = center > vh / 2 ? 'top' : 'bottom';
-    place(first);
+    var preferred = center > vh * 0.55 ? 'top' : 'bottom';
+    place(preferred);
     var cr = card.getBoundingClientRect();
     if (overlap(tr, cr)) {
-      place(first === 'top' ? 'bottom' : 'top');
-      cr = card.getBoundingClientRect();
-      if (overlap(tr, cr) && typeof window.scrollBy === 'function') {
-        var shift = first === 'top' ? tr.top - (cr.bottom + 12) : tr.bottom - (cr.top - 12);
-        window.scrollBy(0, shift);
+      var alt = preferred === 'top' ? 'bottom' : 'top';
+      place(alt);
+      var crAlt = card.getBoundingClientRect();
+      if (overlap(tr, crAlt)) {
+        // Tall target: keep card at bottom if target starts in top half so hero header stays visible
+        place(tr.top < vh * 0.45 ? 'bottom' : 'top');
       }
     }
     updateSpotlightCutout(target);
@@ -312,7 +313,11 @@
         spotlight = target;
         target.classList.add('tutorial-target-active');
         addBeacon(target);
-        if (target.scrollIntoView) target.scrollIntoView({ block: 'center', behavior: 'auto' });
+        var rectNow = target.getBoundingClientRect ? target.getBoundingClientRect() : null;
+        var vhNow = (typeof window !== 'undefined' && window.innerHeight) ? window.innerHeight : 800;
+        if (rectNow && (rectNow.top < 0 || rectNow.bottom > vhNow) && target.scrollIntoView) {
+          target.scrollIntoView({ block: 'nearest', behavior: 'auto' });
+        }
         positionCard(target, card);
       }
       bindGate(step);
