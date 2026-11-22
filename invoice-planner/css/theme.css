@@ -1,0 +1,77 @@
+/**
+ * Invoice Planner — Edition 1 (Sage Calm Studio / Maya) Theme Tokens
+ * Shop 1 Brand DNA: Light Sage (#f4f7f5), Pure White Surfaces (#ffffff), Deep Sage Primary (#2d5a44), Soft Gold (#d97706).
+ */
+:root,
+body[data-theme="sage-calm"] {
+  --bg-primary: #f4f7f5;
+  --bg-elevated: #eaf1ed;
+  --surface: #ffffff;
+  --surface-muted: #f7faf8;
+  --text-main: #182820;
+  --text-muted: #526a5d;
+  --border: #d5e2da;
+  --accent: #2d5a44;
+  --accent-strong: #1f4231;
+  --accent-soft: #e2efe8;
+  --gold: #d97706;
+  --gold-soft: #fef3c7;
+  --danger: #b45309;
+  --danger-soft: #fef2f2;
+  --ok: #1f6f4a;
+  --ok-soft: #dcfce7;
+  --shadow: 0 10px 26px rgba(24, 40, 32, 0.06);
+  --radius: 18px;
+  --radius-sm: 12px;
+}
+
+body[data-theme="lavender-mist"] {
+  --bg-primary: #f5f4f8;
+  --bg-elevated: #ece9f4;
+  --surface: #ffffff;
+  --surface-muted: #f9f8fc;
+  --text-main: #221c30;
+  --text-muted: #5f5675;
+  --border: #dcd6ea;
+  --accent: #55437a;
+  --accent-strong: #3d2e5c;
+  --accent-soft: #eae5f5;
+  --gold: #c26d18;
+  --gold-soft: #fdecd8;
+  --ok: #2c6e58;
+  --ok-soft: #e0f5ec;
+}
+
+body[data-theme="warm-sand"] {
+  --bg-primary: #f7f4ef;
+  --bg-elevated: #efe9df;
+  --surface: #ffffff;
+  --surface-muted: #faf8f4;
+  --text-main: #2a211b;
+  --text-muted: #6c5b4f;
+  --border: #e3d9cb;
+  --accent: #7c4d32;
+  --accent-strong: #5a3520;
+  --accent-soft: #f2e7de;
+  --gold: #b45309;
+  --gold-soft: #fef3c7;
+  --ok: #2e6b48;
+  --ok-soft: #e3f3e9;
+}
+
+body[data-theme="high-contrast"] {
+  --bg-primary: #ffffff;
+  --bg-elevated: #f1f5f9;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --text-main: #090d16;
+  --text-muted: #334155;
+  --border: #0f172a;
+  --accent: #0f172a;
+  --accent-strong: #000000;
+  --accent-soft: #e2e8f0;
+  --gold: #9a3412;
+  --gold-soft: #ffedd5;
+  --ok: #14532d;
+  --ok-soft: #dcfce7;
+}

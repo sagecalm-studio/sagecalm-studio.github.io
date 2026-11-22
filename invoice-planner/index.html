@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice Planner — Calm Client Billing, Unbilled Work Studio, Tax Shield &amp; Kind Follow-Ups</title>
+  <meta name="description" content="A calm, zero-subscription freelance invoice &amp; client billing planner. Unbilled Work Drawer, Printable Invoice Studio, 1-Tap Paid Payout Tax Splitter, Shame-Free Follow-Up Scripts &amp; Recurring Retainer Tracker. 100% private offline PWA.">
+  <meta name="theme-color" content="#2d5a44">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <style id="zero-blur-lockout">
+    #tutorial-overlay, .tutorial-overlay {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      filter: none !important;
+    }
+  </style>
+  <link rel="stylesheet" href="css/theme.css?v=1.0.3">
+  <link rel="stylesheet" href="css/app.css?v=1.0.3">
+  <link rel="stylesheet" href="css/components.css?v=1.0.3">
+</head>
+<body data-theme="sage-calm" data-active-tab="pulse">
+
+  <div class="app-container">
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">Invoice Planner</h1>
+          <div class="brand-subtitle">Maya's Billing Sanctuary · Sage Calm Studio</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span id="badge-collected" class="badge-pill" title="Total paid invoice revenue collected">$0.00 collected</span>
+        <button id="btn-launch-tour" class="btn btn-sm btn-secondary" type="button">Maya's Guide</button>
+        <button id="btn-toggle-fog" class="btn btn-sm btn-ghost" type="button" aria-pressed="false">Fog Mode</button>
+      </div>
+    </header>
+
+    <!-- Screen 1: Pulse (Revenue Pipeline Hero, 5-Second Unbilled Work Log & 14-Day Inflow Weather) -->
+    <main id="screen-pulse" class="app-screen active">
+      <section id="hero-pulse" class="card hero-card" aria-label="Ready Revenue Pipeline"></section>
+
+      <section class="card fog-hide" aria-label="5-second unbilled work log">
+        <div class="card-title">
+          <span>5-Second Unbilled Work Capture</span>
+          <span class="muted">· never forget billable hours</span>
+        </div>
+        <div class="inline-form">
+          <input id="qa-work-client" class="input" type="text" maxlength="100" placeholder="Client name (e.g. Lumen Botanicals)" autocomplete="off">
+          <input id="qa-work-title" class="input" type="text" maxlength="120" placeholder="Deliverable or task (e.g. Homepage Polish, 2hr Call)" autocomplete="off">
+          <input id="qa-work-amount" class="input" type="number" min="0.01" max="1000000" step="0.01" value="150.00" style="max-width:125px;" aria-label="Billable amount in dollars">
+          <button id="btn-qa-work" class="btn btn-primary" type="button">Log Billable Work</button>
+        </div>
+        <div class="chip-label">1-Tap Service Rate Presets</div>
+        <div id="qa-amount-chips" class="chip-row" role="group" aria-label="Quick service rate presets">
+          <button type="button" class="chip selected" data-cents="15000" data-label="Strategy / Consult Session">$150 Consult</button>
+          <button type="button" class="chip" data-cents="45000" data-label="Design / Dev Sprint">$450 Sprint</button>
+          <button type="button" class="chip" data-cents="85000" data-label="Project Milestone">$850 Milestone</button>
+          <button type="button" class="chip" data-cents="120000" data-label="Monthly Retainer Block">$1,200 Retainer</button>
+        </div>
+      </section>
+
+      <section class="card fog-hide" aria-label="Unbilled work drawer">
+        <div class="card-title">
+          <span>Unbilled Work Drawer (1-Tap Convert to Invoice)</span>
+          <button class="btn btn-secondary btn-sm" type="button" data-open-modal="modal-add-invoice">+ New Invoice</button>
+        </div>
+        <div id="unbilled-work-list" class="list"></div>
+      </section>
+
+      <section class="card fog-hide" aria-label="14-day expected inflow weather">
+        <div class="card-title">
+          <span>14-Day Expected Payment &amp; Retainer Horizon</span>
+          <span id="weather-status-tag" class="tag ok">Steady Pipeline</span>
+        </div>
+        <div id="weather-ribbon" class="weather-grid"></div>
+      </section>
+
+      <section class="stat-grid fog-hide" aria-label="Quick billing metrics">
+        <div class="stat"><div id="stat-awaiting" class="stat-num">$0.00</div><div class="stat-label">Awaiting Payment</div></div>
+        <div class="stat"><div id="stat-tax-vault" class="stat-num">$0.00</div><div class="stat-label">Tax Shield Vault</div></div>
+        <div class="stat"><div id="stat-owner-safe" class="stat-num">$0.00</div><div class="stat-label">Safe Owner Cash</div></div>
+      </section>
+    </main>
+
+    <!-- Screen 2: Invoices (Client Invoice Studio, Filter & Printable Preview) -->
+    <section id="screen-invoices" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Client Invoice Studio</h2>
+          <p class="muted">Create clean client invoices with integer-cent tax/discount math and Friday Early weekend shift.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" data-open-modal="modal-add-invoice">+ Draft Invoice</button>
+      </div>
+
+      <div id="invoices-card" class="card">
+        <div class="card-title">
+          <span>All Client Invoices</span>
+          <div id="invoice-filter" class="chip-row" role="group" aria-label="Invoice status filter">
+            <button type="button" class="chip selected" data-inv-filter="all">All</button>
+            <button type="button" class="chip" data-inv-filter="open">Sent &amp; Overdue</button>
+            <button type="button" class="chip" data-inv-filter="draft">Drafts</button>
+            <button type="button" class="chip" data-inv-filter="paid">Paid</button>
+          </div>
+        </div>
+        <div id="invoices-list" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Screen 3: Payout (1-Tap Paid Payout Autopilot Splitter) -->
+    <section id="screen-payout" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Paid Invoice Payout Splitter</h2>
+          <p class="muted">Never accidentally spend your tax money. Split any client payment into 4 clear buckets in one tap.</p>
+        </div>
+      </div>
+
+      <div id="payout-card" class="card">
+        <div class="card-title">1. Enter Collected Client Payment</div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Payment Source / Invoice Label</span>
+            <input id="pay-label" class="input" type="text" maxlength="80" value="Paid Client Invoice" autocomplete="off">
+          </label>
+          <label class="field">
+            <span>Collected Payment Amount ($)</span>
+            <input id="pay-amount" class="input" type="number" min="1" max="1000000" step="0.01" value="1600.00">
+          </label>
+        </div>
+        <div class="chip-label">Choose Your Freelance Tax &amp; Profit Split Rule</div>
+        <div id="pay-preset-chips" class="chip-row" role="group" aria-label="Payout split presets">
+          <button type="button" class="chip selected" data-preset="standard">Calm Freelancer 25 / 15 / 10 / 50</button>
+          <button type="button" class="chip" data-preset="taxheavy">High-Tax Shield 30 / 15 / 15 / 40</button>
+          <button type="button" class="chip" data-preset="lean">Solo Creator 20 / 10 / 15 / 55</button>
+          <button type="button" class="chip" data-preset="growth">Studio Scale 25 / 25 / 15 / 35</button>
+        </div>
+
+        <div id="payout-preview" class="split-grid"></div>
+
+        <div class="row-actions">
+          <button id="btn-run-payout" class="btn btn-primary" type="button">Apply Payout Split</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Recent Payout Allocations</div>
+        <div id="payout-history-list" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Screen 4: Follow-Up (Shame-Free Overdue Follow-Up Script Generator & Triage) -->
+    <section id="screen-followup" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Shame-Free Follow-Up Studio</h2>
+          <p class="muted">Take the awkwardness out of asking to be paid. Copy a warm, pre-filled client note in one tap.</p>
+        </div>
+      </div>
+
+      <div id="followup-card" class="card">
+        <div class="card-title">1. Pick Invoice &amp; Follow-Up Tone</div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Select Open Invoice</span>
+            <select id="followup-invoice-select" class="input" aria-label="Select invoice for follow-up"></select>
+          </label>
+          <div>
+            <div class="chip-label" style="margin-top:0;">Choose Message Tone</div>
+            <div id="followup-tone-chips" class="chip-row" role="group" aria-label="Follow-up tone">
+              <button type="button" class="chip selected" data-tone="warm">Warm Heads-Up</button>
+              <button type="button" class="chip" data-tone="gentle">Gentle Overdue Nudge</button>
+              <button type="button" class="chip" data-tone="firm">Clear Past-Due Notice</button>
+            </div>
+          </div>
+        </div>
+        <label class="field">
+          <span>Ready-to-Send Client Message (Editable)</span>
+          <textarea id="followup-script-box" class="input" rows="6"></textarea>
+        </label>
+        <div class="row-actions">
+          <button id="btn-copy-script" class="btn btn-primary" type="button">📋 Copy Message to Clipboard</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Overdue &amp; Upcoming Invoice Triage</div>
+        <p class="muted" style="margin-bottom:10px;">Mark paid, shift a due date calmly, or load into the script generator above:</p>
+        <div id="triage-list" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Screen 5: Retainers (Recurring Client Retainers & Anti-Double-Counting Vault Sync) -->
+    <section id="screen-retainers" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Client Retainers &amp; Cash Vault</h2>
+          <p class="muted">Automate recurring client billing and sync your business checking without double-counting.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" data-open-modal="modal-add-retainer">+ New Retainer</button>
+      </div>
+
+      <div id="retainers-summary-card" class="card"></div>
+
+      <div id="retainers-card" class="card">
+        <div class="card-title">Active &amp; Paused Client Retainers</div>
+        <div id="retainers-list" class="list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Business Checking Snapshot Sync (Anti-Double-Counting)</div>
+        <p class="muted" style="margin-bottom:10px;">Sync your real business checking balance anytime. Invoices marked paid earlier today are never added twice.</p>
+        <div class="inline-form">
+          <input id="sync-balance-input" class="input" type="number" step="0.01" placeholder="Current business checking balance ($)">
+          <button id="btn-sync-balance" class="btn btn-primary" type="button">Sync Checking</button>
+        </div>
+        <div id="accounts-list" class="list" style="margin-top:12px;"></div>
+      </div>
+    </section>
+
+    <!-- Screen 6: Settings -->
+    <section id="screen-settings" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Studio Settings</h2>
+          <p class="muted">100% of your client and invoice data lives privately in your browser on this device.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Calm Neurodivergent Themes</div>
+        <div id="theme-picker" class="chip-row"></div>
+        <label class="switch-row">
+          <span>Gentle completion sound chimes</span>
+          <input id="set-sound" type="checkbox" checked>
+        </label>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Studio Brand, Tax Rate &amp; Monthly Revenue Goal</div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Your Studio / Business Name</span>
+            <input id="set-business-name" class="input" type="text" maxlength="80" value="Sage Creative Studio">
+          </label>
+          <label class="field">
+            <span>Default Payment Terms</span>
+            <select id="set-default-terms" class="input">
+              <option value="receipt">Due on Receipt</option>
+              <option value="net7">Net 7 Days</option>
+              <option value="net14">Net 14 Days</option>
+              <option value="net30">Net 30 Days</option>
+            </select>
+          </label>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Monthly Revenue Goal ($)</span>
+            <input id="set-monthly-target" class="input" type="number" min="100" max="1000000" step="100" value="5000">
+          </label>
+          <label class="field">
+            <span>Currency Symbol</span>
+            <select id="set-currency" class="input">
+              <option value="USD">USD ($)</option>
+              <option value="CAD">CAD (CA$)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="AUD">AUD (A$)</option>
+            </select>
+          </label>
+        </div>
+        <button id="btn-save-settings" class="btn btn-primary btn-sm" type="button">Save Studio Calibration</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Clean Slate, Sample Data &amp; Backups</div>
+        <p class="muted" style="margin-bottom:10px;">Start fresh on a clean empty slate anytime, or load sample data to explore features.</p>
+        <div class="row-actions">
+          <button id="btn-clean-slate" class="btn btn-secondary" type="button">🧹 Start Clean Slate</button>
+          <button id="btn-load-sample" class="btn btn-secondary" type="button">🌱 Load Sample Data</button>
+          <button id="btn-restart-tour" class="btn btn-ghost" type="button">Replay Maya's Tour</button>
+        </div>
+        <div class="row-actions" style="margin-top:10px;">
+          <button id="btn-export-json" class="btn btn-secondary" type="button">Export JSON Backup</button>
+          <button id="btn-import-json" class="btn btn-secondary" type="button">Import JSON Backup</button>
+          <input id="file-import" type="file" accept="application/json,.json" style="display:none;">
+          <button id="btn-reset-data" class="btn btn-danger-soft" type="button">Erase All Data</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Symmetric 6-Tab Bottom Navigation (6%6==0 desktop, 6%3==0 mobile) -->
+    <nav id="bottom-nav" class="bottom-nav" aria-label="Main Navigation">
+      <button class="nav-btn active" type="button" data-tab="pulse"><span class="nav-ico">◎</span><span>Pulse</span></button>
+      <button class="nav-btn" type="button" data-tab="invoices"><span class="nav-ico">▤</span><span>Invoices</span></button>
+      <button class="nav-btn" type="button" data-tab="payout"><span class="nav-ico">⚡</span><span>Payout Split</span></button>
+      <button class="nav-btn" type="button" data-tab="followup"><span class="nav-ico">✉</span><span>Follow-Up</span></button>
+      <button class="nav-btn" type="button" data-tab="retainers"><span class="nav-ico">↻</span><span>Retainers</span></button>
+      <button class="nav-btn" type="button" data-tab="settings"><span class="nav-ico">⚙</span><span>Settings</span></button>
+    </nav>
+  </div>
+
+  <!-- Modal 1: Add / Draft Invoice -->
+  <div id="modal-add-invoice" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="add-inv-h">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="add-inv-h">Create Client Invoice</h3>
+        <button class="btn-x" type="button" data-close-modal="modal-add-invoice" aria-label="Close">×</button>
+      </div>
+      <div class="grid-2">
+        <label class="field"><span>Client Name</span><input id="inv-client" class="input" type="text" maxlength="100" placeholder="e.g. Northstar Wellness Co."></label>
+        <label class="field"><span>Project / Deliverable Title</span><input id="inv-title" class="input" type="text" maxlength="120" placeholder="e.g. Brand Strategy &amp; Web Sprint"></label>
+      </div>
+      <div class="grid-2">
+        <label class="field"><span>Subtotal Amount ($)</span><input id="inv-amount" class="input" type="number" min="0.01" step="0.01" value="850.00"></label>
+        <label class="field"><span>Payment Terms</span><select id="inv-terms" class="input">
+          <option value="net14">Net 14 Days</option>
+          <option value="net7">Net 7 Days</option>
+          <option value="net30">Net 30 Days</option>
+          <option value="receipt">Due on Receipt</option>
+        </select></label>
+      </div>
+      <div class="grid-2">
+        <label class="field"><span>Tax (%)</span><input id="inv-tax" class="input" type="number" min="0" max="100" step="1" value="0"></label>
+        <label class="field"><span>Discount (%)</span><input id="inv-discount" class="input" type="number" min="0" max="100" step="1" value="0"></label>
+      </div>
+      <div class="grid-2">
+        <label class="field"><span>Deposit Already Paid ($)</span><input id="inv-deposit" class="input" type="number" min="0" step="0.01" value="0"></label>
+        <label class="field"><span>Initial Status</span><select id="inv-status" class="input">
+          <option value="sent">Sent (Awaiting Payment)</option>
+          <option value="draft">Draft (Not Sent Yet)</option>
+        </select></label>
+      </div>
+      <label class="switch-row"><span>Shift weekend due dates to Friday early</span><input id="inv-weekend" type="checkbox" checked></label>
+      <p id="inv-error" class="form-error" role="alert"></p>
+      <div class="row-actions">
+        <button id="btn-save-invoice" class="btn btn-primary" type="button">Save Invoice</button>
+        <button class="btn btn-ghost" type="button" data-close-modal="modal-add-invoice">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add Client Retainer -->
+  <div id="modal-add-retainer" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="add-ret-h">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="add-ret-h">Add Recurring Client Retainer</h3>
+        <button class="btn-x" type="button" data-close-modal="modal-add-retainer" aria-label="Close">×</button>
+      </div>
+      <label class="field"><span>Client Name</span><input id="ret-client" class="input" type="text" maxlength="100" placeholder="e.g. Kindred Coffee Roasters"></label>
+      <label class="field"><span>Retainer Scope Title</span><input id="ret-title" class="input" type="text" maxlength="120" placeholder="e.g. Monthly Design &amp; Web Care Retainer"></label>
+      <div class="grid-2">
+        <label class="field"><span>Fee per Cycle ($)</span><input id="ret-amount" class="input" type="number" min="1" step="0.01" value="950.00"></label>
+        <label class="field"><span>Billing Cycle</span><select id="ret-cycle" class="input">
+          <option value="monthly">Monthly</option>
+          <option value="quarterly">Quarterly</option>
+          <option value="weekly">Weekly</option>
+          <option value="yearly">Yearly</option>
+        </select></label>
+      </div>
+      <label class="field"><span>Next Billing Date</span><input id="ret-next-date" class="input" type="date"></label>
+      <p id="ret-error" class="form-error" role="alert"></p>
+      <div class="row-actions">
+        <button id="btn-save-retainer" class="btn btn-primary" type="button">Save Retainer</button>
+        <button class="btn btn-ghost" type="button" data-close-modal="modal-add-retainer">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Printable Invoice Preview Sheet -->
+  <div id="modal-preview-invoice" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="prev-inv-h">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="prev-inv-h">Client Invoice Summary Sheet</h3>
+        <button class="btn-x" type="button" data-close-modal="modal-preview-invoice" aria-label="Close">×</button>
+      </div>
+      <div id="invoice-preview-body" class="invoice-preview-sheet"></div>
+      <div class="row-actions">
+        <button id="btn-print-invoice" class="btn btn-primary" type="button">🖨 Print / Save PDF</button>
+        <button id="btn-copy-invoice" class="btn btn-secondary" type="button">📋 Copy Invoice Summary</button>
+        <button class="btn btn-ghost" type="button" data-close-modal="modal-preview-invoice">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Confirm Dialog -->
+  <div id="modal-confirm" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-h">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="confirm-h">Are you sure?</h3>
+        <button class="btn-x" type="button" data-close-modal="modal-confirm" aria-label="Close">×</button>
+      </div>
+      <p id="confirm-text" class="muted" style="margin-bottom:14px;"></p>
+      <div class="row-actions">
+        <button id="btn-confirm-yes" class="btn btn-danger-soft" type="button">Yes, proceed</button>
+        <button class="btn btn-ghost" type="button" data-close-modal="modal-confirm">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Guided Tour Overlay (Rules 16, 17, 18, 20, 23) -->
+  <div id="tutorial-overlay" class="tutorial-overlay" style="display:none;">
+    <div id="tutorial-card" class="tutorial-card" style="display:none;" role="dialog" aria-live="polite" aria-labelledby="tutorial-title">
+      <div class="tour-head">
+        <div class="tour-avatar" aria-hidden="true">M</div>
+        <div>
+          <div id="tutorial-section-tag" class="tour-tag"></div>
+          <div id="tutorial-title" class="tour-title"></div>
+        </div>
+        <div id="tutorial-step-count" class="tour-count"></div>
+      </div>
+      <p id="tutorial-message" class="tour-msg"></p>
+      <p id="tutorial-hint" class="tour-hint"></p>
+      <div class="tour-actions">
+        <button id="tutorial-btn-skip" class="btn btn-ghost btn-sm" type="button">Skip tour</button>
+        <span class="spacer"></span>
+        <button id="tutorial-btn-prev" class="btn btn-secondary btn-sm" type="button">Back</button>
+        <button id="tutorial-btn-next" class="btn btn-primary btn-sm" type="button">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if ('caches' in window) {
+      caches.keys().then(function (keys) {
+        keys.forEach(function (k) {
+          if (k !== 'invoice-planner-v1') caches.delete(k);
+        });
+      }).catch(function () {});
+    }
+  </script>
+  <script src="js/engine.js?v=1.0.3"></script>
+  <script src="js/storage.js?v=1.0.3"></script>
+  <script src="js/config.js?v=1.0.3"></script>
+  <script src="js/tutorials.js?v=1.0.3"></script>
+  <script src="js/app.js?v=1.0.3"></script>
+</body>
+</html>
