@@ -1,0 +1,601 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>End of Life Planner — Offline Legacy Vault, Legal Document Map &amp; Executor Packet</title>
+  <meta name="description" content="A calm, zero-subscription End of Life Planner &amp; Emergency Binder PWA. Legacy Readiness Score, Legal Document Map, Estate &amp; Insurance Tracker, Digital Legacy Keys, Final Wishes &amp; Printable Executor Packet.">
+  <meta name="theme-color" content="#2d5a44">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+  <style id="zero-blur-lockout">
+    #tutorial-overlay, .tutorial-overlay {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      filter: none !important;
+    }
+  </style>
+  <link rel="stylesheet" href="../css/theme.css?v=1.0.0">
+  <link rel="stylesheet" href="../css/app.css?v=1.0.0">
+  <link rel="stylesheet" href="../css/components.css?v=1.0.0">
+  <link rel="stylesheet" href="demo-banner.css?v=1.0.0">
+  <script src="demo-guard.js?v=1.0.0"></script>
+</head>
+<body data-theme="sage-calm" data-active-tab="overview">
+
+  <div class="app-container">
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">End of Life Planner</h1>
+          <div class="brand-subtitle">Maya's Peace-of-Mind Sanctuary · Sage Calm Studio</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span id="badge-readiness" class="badge-pill" title="Overall Legacy Readiness Score">0% Ready</span>
+        <button id="btn-launch-tour" class="btn btn-sm btn-secondary" type="button">Maya's Guide</button>
+        <button id="btn-toggle-fog" class="btn btn-sm btn-ghost" type="button" aria-pressed="false">Gentle Mode</button>
+      </div>
+    </header>
+
+    <!-- Screen 1: Readiness Overview -->
+    <main id="screen-overview" class="app-screen active">
+      <section id="hero-readiness" class="card hero-card" aria-label="Legacy Readiness Score"></section>
+
+      <section id="quick-capture-card" class="card fog-hide" aria-label="10-second quick capture">
+        <div class="card-title">
+          <span>Quick Peace-of-Mind Capture</span>
+          <span class="muted">· log one item in 10 seconds</span>
+        </div>
+        <div class="inline-form">
+          <select id="qa-kind" class="select" style="max-width:170px;" aria-label="Entry type">
+            <option value="document">Document Locator</option>
+            <option value="contact">First-Call Contact</option>
+            <option value="account">Bank / Policy</option>
+            <option value="digital">Digital Account</option>
+          </select>
+          <input id="qa-title" class="input" type="text" maxlength="110" placeholder="e.g. Signed Will in Closet Safe, or Vanguard 401k" autocomplete="off">
+          <button id="btn-qa-add" class="btn btn-primary" type="button">Save Item</button>
+        </div>
+        <div class="chip-label">1-Tap Starter Prompts</div>
+        <div id="qa-prompt-chips" class="chip-row" role="group" aria-label="Quick capture presets">
+          <button type="button" class="chip" data-kind="document" data-text="Last Will &amp; Testament (Fireproof Safe)">+ Will Location</button>
+          <button type="button" class="chip" data-kind="contact" data-text="Primary Executor / Trusted Family">+ Executor</button>
+          <button type="button" class="chip" data-kind="account" data-text="Primary Checking Account (Last 4: )">+ Checking</button>
+          <button type="button" class="chip" data-kind="digital" data-text="Primary Email &amp; Cloud Photos">+ Email &amp; Photos</button>
+        </div>
+      </section>
+
+      <section class="card fog-hide" aria-label="Six readiness pillars">
+        <div class="card-title">
+          <span>6 Legacy Readiness Pillars</span>
+          <span class="muted">· tap any pillar to open</span>
+        </div>
+        <div id="pillars-grid" class="pillar-grid"></div>
+      </section>
+
+      <section class="stat-grid fog-hide" aria-label="Vault snapshot metrics">
+        <div class="stat"><div id="stat-contacts" class="stat-num">0</div><div class="stat-label">People &amp; Care</div></div>
+        <div class="stat"><div id="stat-estate" class="stat-num">$0.00</div><div class="stat-label">Est. Net Estate</div></div>
+        <div class="stat"><div id="stat-review" class="stat-num">365 days</div><div class="stat-label">Next Review</div></div>
+      </section>
+
+      <div class="disclaimer-strip fog-hide">
+        <strong>Privacy &amp; Legal Clarity:</strong> All records stay 100% private on this device. Store document <em>locations</em> and last-4 digits rather than full SSNs or raw passwords. This planner organizes your wishes and does not replace a legally executed Will or Power of Attorney.
+      </div>
+    </main>
+
+    <!-- Screen 2: People & Care -->
+    <section id="screen-contacts" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>People &amp; First-Call Circle</h2>
+          <p class="muted">Who should be called first, who holds keys, and who cares for pets or dependents.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" data-open-modal="modal-add-contact">+ Add Person</button>
+      </div>
+
+      <div id="contacts-firstcall-card" class="card">
+        <div class="card-title">
+          <span>Emergency &amp; Professional Circle</span>
+          <div id="contact-filter-chips" class="chip-row" role="group" aria-label="Filter contacts">
+            <button type="button" class="chip selected" data-filter="all">All</button>
+            <button type="button" class="chip" data-filter="first">First Call</button>
+            <button type="button" class="chip" data-filter="pro">Legal &amp; Medical</button>
+          </div>
+        </div>
+        <div id="contacts-list" class="list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Dependents &amp; Pet Care Protocols</span>
+          <button class="btn btn-secondary btn-sm" type="button" data-open-modal="modal-add-dependent">+ Add Care Plan</button>
+        </div>
+        <div id="dependents-list" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Screen 3: Legal & Estate Vault -->
+    <section id="screen-vault" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Legal Documents &amp; Estate Vault</h2>
+          <p class="muted">Map physical document locations, financial accounts, life insurance, and auto-pay bills.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" data-open-modal="modal-add-document">+ Add Document</button>
+      </div>
+
+      <div id="vault-docs-card" class="card">
+        <div class="card-title">
+          <span>Legal &amp; Vital Document Map</span>
+          <span id="docs-progress-tag" class="tag">0 located</span>
+        </div>
+        <div id="documents-list" class="list"></div>
+      </div>
+
+      <div id="vault-estate-card" class="card">
+        <div class="card-title">
+          <span>Financial Accounts, Insurance &amp; Debts</span>
+          <button class="btn btn-secondary btn-sm" type="button" data-open-modal="modal-add-account">+ Add Account</button>
+        </div>
+        <div id="estate-summary-strip" class="stat-grid" style="margin-bottom:12px;">
+          <div class="stat"><div id="est-assets" class="stat-num">$0.00</div><div class="stat-label">Assets</div></div>
+          <div class="stat"><div id="est-policies" class="stat-num">$0.00</div><div class="stat-label">Life Insurance</div></div>
+          <div class="stat"><div id="est-debts" class="stat-num">$0.00</div><div class="stat-label">Debts / Loans</div></div>
+        </div>
+        <div id="accounts-list" class="list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Recurring Auto-Pay Bills (Cancel / Transfer)</span>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span id="autopay-monthly-tag" class="tag warn">$0.00/mo</span>
+            <button class="btn btn-secondary btn-sm" type="button" data-open-modal="modal-add-autopay">+ Add Auto-Pay</button>
+          </div>
+        </div>
+        <div id="autopays-list" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Screen 4: Digital Legacy Keys -->
+    <section id="screen-digital" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Digital Legacy &amp; Access Map</h2>
+          <p class="muted">Point your executor to your password manager and specify memorialize, transfer, or delete wishes.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" data-open-modal="modal-add-digital">+ Add Account</button>
+      </div>
+
+      <div id="digital-manager-card" class="card">
+        <div class="card-title">
+          <span>Master Vault Pointer (No Plain-Text Passwords)</span>
+          <span class="tag ok">Security-First</span>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Password Manager Used</span>
+            <input id="vm-manager" class="input" type="text" maxlength="120" placeholder="e.g. 1Password, Bitwarden, Apple Passwords">
+          </label>
+          <label class="field">
+            <span>Emergency Kit / Master Key Hint Location</span>
+            <input id="vm-recovery" class="input" type="text" maxlength="220" placeholder="e.g. Sealed envelope in Fireproof Safe">
+          </label>
+        </div>
+        <label class="field">
+          <span>Apple / Google / Phone Legacy Contact Instructions</span>
+          <input id="vm-legacy-contact" class="input" type="text" maxlength="240" placeholder="e.g. Spouse added as Apple Legacy Contact">
+        </label>
+        <button id="btn-save-vault-meta" class="btn btn-primary btn-sm" type="button">Save Vault Pointer</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Online Accounts &amp; Legacy Directives</span>
+          <span id="digital-tally-tag" class="tag">0 accounts</span>
+        </div>
+        <div id="digital-list" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Screen 5: Final Wishes & Executor Checklist -->
+    <section id="screen-wishes" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Final Wishes &amp; Executor Roadmap</h2>
+          <p class="muted">Your personal service preferences, letters to loved ones, and step-by-step executor checklist.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" type="button" data-open-modal="modal-add-letter">+ Write Legacy Note</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Final Wishes &amp; Memorial Preferences</span>
+          <button id="btn-save-wishes" class="btn btn-primary btn-sm" type="button">Save Wishes</button>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Burial / Cremation / Green Disposition</span>
+            <input id="w-disposition" class="input" type="text" maxlength="200" placeholder="e.g. Cremation, Natural Burial, Pre-paid plot">
+          </label>
+          <label class="field">
+            <span>Organ &amp; Tissue Donation Preference</span>
+            <input id="w-organ" class="input" type="text" maxlength="120" placeholder="e.g. Registered Donor / No preference">
+          </label>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Service Tone &amp; Gathering Style</span>
+            <input id="w-tone" class="input" type="text" maxlength="200" placeholder="e.g. Warm celebration of life, intimate family meal">
+          </label>
+          <label class="field">
+            <span>Favorite Music, Readings or Charities</span>
+            <input id="w-music" class="input" type="text" maxlength="240" placeholder="e.g. Acoustic playlist, donations to animal shelter">
+          </label>
+        </div>
+        <label class="field">
+          <span>Additional Service &amp; Obituary Notes</span>
+          <textarea id="w-notes" class="textarea" maxlength="600" placeholder="Key life highlights, people to mention, or special requests..."></textarea>
+        </label>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Legacy Letters &amp; Heirloom Wishes</span>
+          <button class="btn btn-secondary btn-sm" type="button" data-open-modal="modal-add-letter">+ Add Note</button>
+        </div>
+        <div id="letters-list" class="list"></div>
+      </div>
+
+      <div id="executor-checklist-card" class="card">
+        <div class="card-title">
+          <span>Sequential Executor Checklist</span>
+          <span id="exec-progress-tag" class="tag ok">0% prepared</span>
+        </div>
+        <div id="checklist-phases" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Screen 6: Executor Packet & Settings -->
+    <section id="screen-settings" class="app-screen">
+      <div class="screen-head">
+        <div>
+          <h2>Executor Packet &amp; Vault Settings</h2>
+          <p class="muted">Print a clean Executor Emergency Brief, schedule annual reviews, or export your offline backup.</p>
+        </div>
+      </div>
+
+      <div id="packet-export-card" class="card">
+        <div class="card-title">
+          <span>Executor Emergency Packet &amp; Local Backup</span>
+          <span class="tag ok">100% Offline</span>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Planner Owner Name (Shown on Printed Packet)</span>
+            <input id="set-owner-name" class="input" type="text" maxlength="100" placeholder="e.g. Jordan Taylor">
+          </label>
+          <label class="field">
+            <span>Master Safe / Physical Binder Location</span>
+            <input id="set-safe-loc" class="input" type="text" maxlength="220" placeholder="e.g. Fireproof Safe in Study Closet">
+          </label>
+        </div>
+        <div class="row-actions" style="margin-top:6px;">
+          <button id="btn-save-profile" class="btn btn-secondary btn-sm" type="button">Save Details</button>
+          <button id="btn-print-packet" class="btn btn-primary btn-sm" type="button">Print / Save Executor Packet</button>
+          <button id="btn-export-json" class="btn btn-secondary btn-sm" type="button">Export JSON Backup</button>
+          <label class="btn btn-ghost btn-sm" style="cursor:pointer;">
+            Import Backup
+            <input id="input-import-json" type="file" accept="application/json" style="display:none;">
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Annual Review Cadence &amp; Preferences</span>
+          <span id="review-schedule-tag" class="tag">Review scheduled</span>
+        </div>
+        <div class="grid-2">
+          <label class="field">
+            <span>Review Every</span>
+            <select id="set-cadence" class="select">
+              <option value="6">Every 6 Months</option>
+              <option value="12">Every 12 Months (Recommended)</option>
+              <option value="24">Every 24 Months</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Currency Symbol</span>
+            <select id="set-currency" class="select">
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="CAD">CAD (CA$)</option>
+              <option value="AUD">AUD (A$)</option>
+            </select>
+          </label>
+        </div>
+        <div class="row-actions">
+          <button id="btn-mark-reviewed" class="btn btn-secondary btn-sm" type="button">Mark Vault Reviewed Today</button>
+          <button id="btn-toggle-sound" class="btn btn-ghost btn-sm" type="button">Gentle Chimes: ON</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>Calm Color Themes</span></div>
+        <div id="theme-picker" class="theme-grid"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>Guided Tour &amp; Data State</span></div>
+        <div class="row-actions">
+          <button id="btn-start-tour" class="btn btn-secondary btn-sm" type="button">Restart Maya's Tour</button>
+          <button id="btn-clean-slate" class="btn btn-ghost btn-sm" type="button">Start Clean Slate</button>
+          <button id="btn-load-sample" class="btn btn-ghost btn-sm" type="button">Load Sample Data</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 6-Tab Symmetric Bottom Navigation -->
+  <nav id="bottom-nav" class="bottom-nav" aria-label="Main navigation">
+    <button type="button" class="nav-btn active" data-tab="overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Readiness</span>
+    </button>
+    <button type="button" class="nav-btn" data-tab="contacts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+      <span>People</span>
+    </button>
+    <button type="button" class="nav-btn" data-tab="vault">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Vault</span>
+    </button>
+    <button type="button" class="nav-btn" data-tab="digital">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>Digital</span>
+    </button>
+    <button type="button" class="nav-btn" data-tab="wishes">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span>Wishes</span>
+    </button>
+    <button type="button" class="nav-btn" data-tab="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      <span>Packet</span>
+    </button>
+  </nav>
+
+  <!-- Modals -->
+  <div id="modal-add-contact" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="m-cnt-title">
+    <div class="modal-card">
+      <div class="modal-head"><h3 id="m-cnt-title">Add Key Person</h3><button type="button" class="btn btn-ghost btn-sm" data-close-modal="modal-add-contact">Close</button></div>
+      <label class="field"><span>Full Name</span><input id="f-cnt-name" class="input" type="text" maxlength="100" placeholder="e.g. Elena Morgan"></label>
+      <div class="grid-2">
+        <label class="field"><span>Role</span>
+          <select id="f-cnt-role" class="select">
+            <option value="executor">Executor / Primary Trusted</option>
+            <option value="family">Family / Close Friend</option>
+            <option value="legal">Estate Attorney / Notary</option>
+            <option value="medical">Doctor / Healthcare Proxy</option>
+            <option value="advisor">Financial / Tax Advisor</option>
+            <option value="other">Employer / Other</option>
+          </select>
+        </label>
+        <label class="field"><span>Relationship</span><input id="f-cnt-rel" class="input" type="text" maxlength="100" placeholder="e.g. Spouse, Sister, Lawyer"></label>
+      </div>
+      <div class="grid-2">
+        <label class="field"><span>Phone</span><input id="f-cnt-phone" class="input" type="text" maxlength="40" placeholder="(555) 123-4567"></label>
+        <label class="field"><span>Email</span><input id="f-cnt-email" class="input" type="email" maxlength="120" placeholder="name@example.com"></label>
+      </div>
+      <label class="field"><span>Notes (Keys, Safe Access, etc.)</span><input id="f-cnt-notes" class="input" type="text" maxlength="300" placeholder="e.g. Holds backup safe key"></label>
+      <label class="check-row" style="margin-bottom:6px;"><input id="f-cnt-first" type="checkbox"><span><strong>Mark as First-Call Priority</strong> (Call within 24 hours)</span></label>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" data-close-modal="modal-add-contact">Cancel</button>
+        <button id="btn-submit-contact" type="button" class="btn btn-primary">Save Person</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-add-dependent" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="m-dep-title">
+    <div class="modal-card">
+      <div class="modal-head"><h3 id="m-dep-title">Add Dependent or Pet Care Plan</h3><button type="button" class="btn btn-ghost btn-sm" data-close-modal="modal-add-dependent">Close</button></div>
+      <div class="grid-2">
+        <label class="field"><span>Name</span><input id="f-dep-name" class="input" type="text" maxlength="100" placeholder="e.g. Milo (Dog) or Maya (Daughter)"></label>
+        <label class="field"><span>Type</span>
+          <select id="f-dep-type" class="select">
+            <option value="pet">Pet</option>
+            <option value="child">Child / Minor</option>
+            <option value="adult">Adult Dependent</option>
+          </select>
+        </label>
+      </div>
+      <label class="field"><span>Designated Caregiver / Guardian</span><select id="f-dep-guardian" class="select"></select></label>
+      <label class="field"><span>Care, Feeding, School, Vet &amp; Medication Notes</span><textarea id="f-dep-notes" class="textarea" maxlength="400" placeholder="Daily routine, vet/pediatrician contact, allergies..."></textarea></label>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" data-close-modal="modal-add-dependent">Cancel</button>
+        <button id="btn-submit-dependent" type="button" class="btn btn-primary">Save Care Plan</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-add-document" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="m-doc-title">
+    <div class="modal-card">
+      <div class="modal-head"><h3 id="m-doc-title">Map Essential Document</h3><button type="button" class="btn btn-ghost btn-sm" data-close-modal="modal-add-document">Close</button></div>
+      <label class="field"><span>Document Title</span><input id="f-doc-title" class="input" type="text" maxlength="120" placeholder="e.g. Last Will &amp; Testament, House Deed"></label>
+      <div class="grid-2">
+        <label class="field"><span>Category</span>
+          <select id="f-doc-cat" class="select">
+            <option value="Legal">Legal (Will / Trust / POA)</option>
+            <option value="Medical">Medical Directive</option>
+            <option value="Vital">Vital Record (Birth / Marriage / ID)</option>
+            <option value="Property">Property Deed / Vehicle Title</option>
+            <option value="Tax">Tax &amp; Military Records</option>
+          </select>
+        </label>
+        <label class="field"><span>Status</span>
+          <select id="f-doc-status" class="select">
+            <option value="signed">Signed &amp; Stored</option>
+            <option value="located">Located</option>
+            <option value="drafting">Drafting / In Progress</option>
+            <option value="missing">Not Yet Created</option>
+          </select>
+        </label>
+      </div>
+      <label class="field"><span>Exact Physical / Digital Location</span><input id="f-doc-loc" class="input" type="text" maxlength="220" placeholder="e.g. Fireproof Safe — Blue Folder #1"></label>
+      <label class="field"><span>Custodian / Who Has a Copy</span><select id="f-doc-custodian" class="select"></select></label>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" data-close-modal="modal-add-document">Cancel</button>
+        <button id="btn-submit-document" type="button" class="btn btn-primary">Save Document</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-add-account" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="m-acc-title">
+    <div class="modal-card">
+      <div class="modal-head"><h3 id="m-acc-title">Add Financial Account, Policy or Debt</h3><button type="button" class="btn btn-ghost btn-sm" data-close-modal="modal-add-account">Close</button></div>
+      <label class="field"><span>Account / Policy Label</span><input id="f-acc-name" class="input" type="text" maxlength="100" placeholder="e.g. Joint Checking, 20-Yr Term Life, Mortgage"></label>
+      <div class="grid-2">
+        <label class="field"><span>Institution / Provider</span><input id="f-acc-inst" class="input" type="text" maxlength="100" placeholder="e.g. Vanguard, Chase, MetLife"></label>
+        <label class="field"><span>Last 4 Digits Only (Security Rule)</span><input id="f-acc-last4" class="input" type="text" maxlength="10" placeholder="e.g. 4821"></label>
+      </div>
+      <div class="grid-2">
+        <label class="field"><span>Type</span>
+          <select id="f-acc-kind" class="select">
+            <option value="asset">Asset (Bank / Retirement / Property)</option>
+            <option value="policy">Life Insurance Benefit</option>
+            <option value="debt">Debt / Mortgage / Loan</option>
+          </select>
+        </label>
+        <label class="field"><span>Estimated Value / Benefit</span><input id="f-acc-bal" class="input" type="number" min="0" max="900000000" step="0.01" placeholder="25000.00"></label>
+      </div>
+      <label class="field"><span>Named Beneficiary</span><select id="f-acc-ben" class="select"></select></label>
+      <label class="field"><span>Paperwork Location / Access Hint</span><input id="f-acc-hint" class="input" type="text" maxlength="220" placeholder="e.g. Joint survivor access; policy in Safe Folder #2"></label>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" data-close-modal="modal-add-account">Cancel</button>
+        <button id="btn-submit-account" type="button" class="btn btn-primary">Save Account</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-add-autopay" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="m-ap-title">
+    <div class="modal-card">
+      <div class="modal-head"><h3 id="m-ap-title">Add Recurring Auto-Pay Bill</h3><button type="button" class="btn btn-ghost btn-sm" data-close-modal="modal-add-autopay">Close</button></div>
+      <label class="field"><span>Bill or Subscription</span><input id="f-ap-title" class="input" type="text" maxlength="100" placeholder="e.g. Electric Utility, Streaming Bundle"></label>
+      <div class="grid-2">
+        <label class="field"><span>Amount</span><input id="f-ap-amount" class="input" type="number" min="0" max="1000000" step="0.01" placeholder="85.00"></label>
+        <label class="field"><span>Billing Cycle</span>
+          <select id="f-ap-cycle" class="select">
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="weekly">Weekly</option>
+          </select>
+        </label>
+      </div>
+      <label class="field"><span>Charged To (Last 4)</span><input id="f-ap-method" class="input" type="text" maxlength="80" placeholder="e.g. Checking #4821"></label>
+      <label class="field"><span>Instruction for Executor</span><input id="f-ap-note" class="input" type="text" maxlength="180" placeholder="e.g. Cancel immediately / Transfer to spouse"></label>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" data-close-modal="modal-add-autopay">Cancel</button>
+        <button id="btn-submit-autopay" type="button" class="btn btn-primary">Save Auto-Pay</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-add-digital" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="m-dig-title">
+    <div class="modal-card">
+      <div class="modal-head"><h3 id="m-dig-title">Add Digital Account Directive</h3><button type="button" class="btn btn-ghost btn-sm" data-close-modal="modal-add-digital">Close</button></div>
+      <div class="grid-2">
+        <label class="field"><span>Service / Platform</span><input id="f-dig-service" class="input" type="text" maxlength="100" placeholder="e.g. Gmail, iCloud Photos, Instagram"></label>
+        <label class="field"><span>Username / Email Handle</span><input id="f-dig-handle" class="input" type="text" maxlength="120" placeholder="e.g. @handle or email"></label>
+      </div>
+      <label class="field"><span>Directive</span>
+        <select id="f-dig-dir" class="select">
+          <option value="archive">Archive &amp; Close Account</option>
+          <option value="transfer">Transfer Files / Ownership</option>
+          <option value="memorialize">Memorialize Profile</option>
+          <option value="delete">Permanently Delete</option>
+        </select>
+      </label>
+      <label class="field"><span>Access Hint (Never Write Raw Passwords)</span><input id="f-dig-hint" class="input" type="text" maxlength="220" placeholder="e.g. Stored in Bitwarden Vault + Legacy Contact enabled"></label>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" data-close-modal="modal-add-digital">Cancel</button>
+        <button id="btn-submit-digital" type="button" class="btn btn-primary">Save Directive</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-add-letter" class="app-modal" role="dialog" aria-modal="true" aria-labelledby="m-let-title">
+    <div class="modal-card">
+      <div class="modal-head"><h3 id="m-let-title">Write Legacy Note or Heirloom Wish</h3><button type="button" class="btn btn-ghost btn-sm" data-close-modal="modal-add-letter">Close</button></div>
+      <div class="grid-2">
+        <label class="field"><span>Addressed To</span><input id="f-let-to" class="input" type="text" maxlength="100" placeholder="e.g. Elena &amp; Kids"></label>
+        <label class="field"><span>Link to Contact (Optional)</span><select id="f-let-contact" class="select"></select></label>
+      </div>
+      <label class="field"><span>Title / Occasion</span><input id="f-let-title" class="input" type="text" maxlength="120" placeholder="e.g. Open When Ready / Watch Heirloom"></label>
+      <label class="field"><span>Message</span><textarea id="f-let-body" class="textarea" maxlength="2500" placeholder="Write from the heart..."></textarea></label>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" data-close-modal="modal-add-letter">Cancel</button>
+        <button id="btn-submit-letter" type="button" class="btn btn-primary">Save Note</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guided Tour Overlay & Card (Rule-17, Rule-20, Rule-23) -->
+  <div id="tutorial-overlay" class="tutorial-overlay" aria-hidden="true">
+    <div id="tutorial-card" class="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+      <div class="tour-head">
+        <div class="tour-avatar">M</div>
+        <div style="min-width:0;">
+          <div id="tutorial-section-tag" class="tour-tag">SECTION</div>
+          <div id="tutorial-title" class="tour-title">Welcome</div>
+        </div>
+        <div id="tutorial-step-count" class="tour-count">1 / 9</div>
+      </div>
+      <div id="tutorial-message" class="tour-msg"></div>
+      <div id="tutorial-hint" class="tour-hint"></div>
+      <div class="tour-actions">
+        <button id="tutorial-btn-skip" type="button" class="btn btn-ghost btn-sm">Skip</button>
+        <div class="spacer"></div>
+        <button id="tutorial-btn-prev" type="button" class="btn btn-secondary btn-sm">Back</button>
+        <button id="tutorial-btn-next" type="button" class="btn btn-primary btn-sm">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="print-packet-sheet" class="print-only-sheet" aria-hidden="true"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // Rule-21: Proactively evict deprecated SW caches and refresh active registration
+    if ('caches' in window) {
+      caches.keys().then(function (keys) {
+        keys.forEach(function (k) {
+          if (k.indexOf('end-of-life-planner-') === 0 && k !== 'end-of-life-planner-v1') {
+            caches.delete(k);
+          }
+        });
+      });
+    }
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./sw.js').then(function (reg) {
+          if (reg && reg.update) reg.update();
+        }).catch(function () {});
+      });
+    }
+  </script>
+  <script src="../js/engine.js?v=1.0.0"></script>
+  <script src="../js/storage.js?v=1.0.0"></script>
+  <script src="../js/config.js?v=1.0.0"></script>
+  <script src="../js/tutorials.js?v=1.0.0"></script>
+  <script src="../js/app.js?v=1.0.0"></script>
+</body>
+</html>
+

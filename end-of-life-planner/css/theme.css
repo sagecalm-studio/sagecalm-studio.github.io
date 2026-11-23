@@ -1,0 +1,88 @@
+/**
+ * End of Life Planner — Edition 1 (Sage Calm Studio / Maya) Theme Tokens
+ * Shop 1 Brand DNA: Light Sage (#f4f7f5), Pure White (#ffffff), Deep Sage (#2d5a44), Soft Gold (#d97706).
+ */
+:root,
+body[data-theme="sage-calm"] {
+  --bg-primary: #f4f7f5;
+  --bg-elevated: #eaf1ec;
+  --surface: #ffffff;
+  --surface-muted: #f8fbf9;
+  --border: #d5e2da;
+  --text-main: #182820;
+  --text-muted: #4b6557;
+  --accent: #2d5a44;
+  --accent-strong: #1e4230;
+  --accent-soft: #e6f0ea;
+  --gold: #d97706;
+  --gold-soft: #fef3c7;
+  --ok: #1f6f4a;
+  --ok-soft: #e3f3eb;
+  --danger: #b91c1c;
+  --danger-soft: #fee2e2;
+  --shadow: 0 8px 24px rgba(24, 40, 32, 0.06);
+  --radius: 18px;
+}
+
+body[data-theme="warm-linen"] {
+  --bg-primary: #f8f5f0;
+  --bg-elevated: #efe9df;
+  --surface: #ffffff;
+  --surface-muted: #fbf9f5;
+  --border: #e2d7c7;
+  --text-main: #29211b;
+  --text-muted: #665748;
+  --accent: #7c5230;
+  --accent-strong: #5e3c21;
+  --accent-soft: #f2e8dc;
+  --gold: #c26d18;
+  --gold-soft: #fef0db;
+  --ok: #2f6b4b;
+  --ok-soft: #e4f2ea;
+  --danger: #b42318;
+  --danger-soft: #fee4e2;
+  --shadow: 0 8px 24px rgba(41, 33, 27, 0.06);
+  --radius: 18px;
+}
+
+body[data-theme="mist-slate"] {
+  --bg-primary: #f3f6f8;
+  --bg-elevated: #e7eef2;
+  --surface: #ffffff;
+  --surface-muted: #f7fafb;
+  --border: #d0dde5;
+  --text-main: #162630;
+  --text-muted: #4a6270;
+  --accent: #2c5263;
+  --accent-strong: #1e3b48;
+  --accent-soft: #e4eef2;
+  --gold: #c97a16;
+  --gold-soft: #fef3dc;
+  --ok: #1e6b54;
+  --ok-soft: #e2f2ec;
+  --danger: #b91c1c;
+  --danger-soft: #fee2e2;
+  --shadow: 0 8px 24px rgba(22, 38, 48, 0.06);
+  --radius: 18px;
+}
+
+body[data-theme="high-contrast"] {
+  --bg-primary: #ffffff;
+  --bg-elevated: #f3f4f6;
+  --surface: #ffffff;
+  --surface-muted: #f9fafb;
+  --border: #1f2937;
+  --text-main: #030712;
+  --text-muted: #374151;
+  --accent: #111827;
+  --accent-strong: #000000;
+  --accent-soft: #e5e7eb;
+  --gold: #92400e;
+  --gold-soft: #fef3c7;
+  --ok: #065f46;
+  --ok-soft: #d1fae5;
+  --danger: #991b1b;
+  --danger-soft: #fee2e2;
+  --shadow: none;
+  --radius: 14px;
+}
